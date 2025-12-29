@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CommonConfig(AppConfig):
+class SalariesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'nadejda_salary.common'
+    name = 'nadejda_salary.salaries'
