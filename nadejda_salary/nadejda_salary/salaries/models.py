@@ -1,7 +1,6 @@
 from django.db import models
-from choices import WorkshopChoices, YearChoices, MonthChoices, WorkDaysChoices
+from nadejda_salary.salaries.choices import WorkshopChoices, YearChoices, MonthChoices, WorkDaysChoices
 from django.core.validators import MinValueValidator, MaxValueValidator
-
 
 class Workers(models.Model):
     name = models.CharField(
@@ -75,7 +74,7 @@ class Month(models.Model):
         choices=MonthChoices.choices,
     )
 
-    work_days = models.Model(
+    work_days = models.PositiveSmallIntegerField(
         validators=[
             MinValueValidator(18),
             MaxValueValidator(23),
@@ -84,7 +83,9 @@ class Month(models.Model):
     )
 
     insurance = models.DecimalField(
-        validators=[MinValueValidator(0)]
+        max_digits=6,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
     )
 
     work_hours = models.PositiveSmallIntegerField()
@@ -97,11 +98,20 @@ class Month(models.Model):
 
     vacation_paid = models.PositiveSmallIntegerField()
 
-    paid_by_bank = models.DecimalField()
+    paid_by_bank = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
 
-    paid_by_cash = models.DecimalField()
+    paid_by_cash = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
 
-    mobile = models.DecimalField()
+    mobile = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
 
     def __str__(self):
         return self.month
