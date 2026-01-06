@@ -5,20 +5,24 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Workers(models.Model):
     name = models.CharField(
         max_length=50,
-        unique=True
+        unique=True,
     )
 
     workshop = models.CharField(
         max_length=20,
-        choices=WorkshopChoices.choices
+        choices=WorkshopChoices.choices,
     )
 
-    salary = models.IntegerField()
+    salary = models.IntegerField(
+        null=True,
+    )
 
-    total_vacation = models.PositiveSmallIntegerField()
+    total_vacation = models.PositiveSmallIntegerField(
+        null=True,
+    )
 
     contract = models.BooleanField(
-        default=True
+        default=True,
     )
 
 

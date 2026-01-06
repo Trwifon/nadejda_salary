@@ -8,6 +8,16 @@
                 <img class="logo" src="{% static 'logo-nadejda.bmp' %}" alt="logo" width="120" height="40">
             </a>
         </li>
+        <li>
+            <a class="link-nav" href="{% url 'create_worker' %}">
+                <span>Нов служител</span>
+            </a>
+        </li>
+        <li>
+            <a class="link-nav" href="{% url 'profile_details' user.pk %}">
+                <span>Нов месец</span>
+            </a>
+        </li>
     </ul>
     <ul class="navbar-right">
         {% if user.is_authenticated %}

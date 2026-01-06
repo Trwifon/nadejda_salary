@@ -117,13 +117,13 @@ td, th{
 .form-group {
     border: 1px solid #58b0e8;
     border-radius: 10px;
-    background-color:#cff4fc;
+    background-color: #d7f7db;
     min-width: 300px;
     max-width: 350px;
     margin: 10px auto;
     padding: 5px;
     text-align: center;
-    color: darkblue;
+    color: darcblue;
 
 
 }

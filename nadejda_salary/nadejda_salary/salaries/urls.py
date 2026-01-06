@@ -1,0 +1,16 @@
+from django.urls import path, include
+from nadejda_salary.salaries.views import WorkerCreateView
+
+
+urlpatterns = [
+    path('create-worker/', WorkerCreateView.as_view(), name='create_worker'),
+    # path('show-report/', ReportShowView.as_view(), name='show_report'),
+    # path('cash-report/', CashShowView.as_view(), name='cash_report'),
+    # path('partner-create/', PartnerCreateView.as_view(), name='partner_create'),
+    # path('errors-test/', ErrorTestView.as_view(), name='errors_test'),
+    # path('<int:partner_pk>/create/', RecordCreateView.as_view(), name='record_create'),
+    # path('<int:record_pk>/', include([
+    #     path('update/', RecordUpdateView.as_view(), name='record_update'),
+    #     path('delete/', RecordGlassDeleteView.as_view(), name='record_glass_delete'),
+    # ])),
+]
