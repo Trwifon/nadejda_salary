@@ -12,24 +12,22 @@ class WorkerCreateForm(ModelForm):
             'name',
             'workshop',
             'contract',
+            'start_date',
         ]
 
         labels = {
             'name': 'Име',
             'workshop': 'Цех',
-            'contract': 'Договор'
+            'contract': 'Договор',
+            'start_date': 'Започнал на:'
         }
 
         widgets = {
             'note': forms.TextInput(attrs = {
                 'placeholder': 'Не използвай "/"'
-            }
-        )}
+            }),
+            'start_date': forms.TextInput(attrs={
+                'type': 'date',
+            }),
+        }
 
-    def clean_note(self):
-        current_note = self.cleaned_data.get('note')
-        if current_note:
-            for letter in current_note:
-                if letter == '/':
-                    raise forms.ValidationError("Полето не трябва да съдържа символа '//'")
-        return current_note
