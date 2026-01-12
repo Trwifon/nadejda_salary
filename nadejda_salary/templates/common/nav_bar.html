@@ -14,9 +14,20 @@
             </a>
         </li>
         <li>
-            <a class="link-nav" href="{% url 'create_worker' %}"
+            <a class="link-nav" href="{% url 'create_month' %}">
                 <span>Нов месец</span>
             </a>
+        </li>
+    </ul>
+    <ul class="navbar-center">
+        <li>
+            {% if current_month %}
+                <a class="link-nav" href="{% url 'data' %}">
+                    <span>Попълване на данни за месец: {{ current_month.month }}</span>
+                </a>
+            {% else %}
+                <span>Няма активен месец</span>
+            {% endif %}
         </li>
     </ul>
     <ul class="navbar-right">

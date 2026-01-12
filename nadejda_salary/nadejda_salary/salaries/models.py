@@ -64,6 +64,10 @@ class CurrentMonth(models.Model):
         choices=WorkDaysChoices.choices,
     )
 
+    open = models.BooleanField(
+        default=True,
+    )
+
 
 class WorkerMonth(models.Model):
     insurance = models.DecimalField(

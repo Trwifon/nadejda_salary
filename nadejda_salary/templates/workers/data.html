@@ -1,0 +1,37 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <table>
+        {% for worker in worker_list %}
+            <tr class="{% if order.id == pk %}highlight{% endif %}">
+                <td>{{worker.name}}</td>
+                <td>{{worker.workshop}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <form class="form-group mb-3 " method="post">
+        <h4>Въвеждане на данни</h4>
+        <hr>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-4">
+                {{ field.label }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button name="display" class = "buttons" type="submit">Предишен</button>
+        <button name="display" class = "buttons" type="submit">Следващ</button>
+    </form>
+
+
+{% endblock %}
+
+
+
+
+
+
+

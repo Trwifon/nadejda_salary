@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 # from nadejda_94_django.common.forms import PartnerForm, SearchForm
 # from nadejda_94_django.records.choices import users_dict
-# from nadejda_94_django.records.models import Record
+from nadejda_salary.salaries.models import CurrentMonth
 # class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
 
@@ -19,6 +19,12 @@ class Dashboard(TemplateView, FormView):
         context = {}
 
         context['current_path'] = self.request.path
+
+        open_month = CurrentMonth.objects.filter(open=True)
+        if open_month:
+            context['current_month'] = open_month[0]
+        else:
+            context['current_month'] = False
 
         # create_form = PartnerForm
         # context['create_form'] = create_form

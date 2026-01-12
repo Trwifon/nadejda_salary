@@ -2,7 +2,7 @@ from datetime import datetime
 from django.forms import ModelForm
 from django import forms
 # from .choices import WarehouseChoices, ReportChoices
-from .models import Workers
+from .models import Workers, CurrentMonth, WorkerMonth
 
 
 class WorkerCreateForm(ModelForm):
@@ -23,11 +23,29 @@ class WorkerCreateForm(ModelForm):
         }
 
         widgets = {
-            'note': forms.TextInput(attrs = {
-                'placeholder': 'Не използвай "/"'
-            }),
             'start_date': forms.TextInput(attrs={
                 'type': 'date',
             }),
         }
 
+
+class MonthCreateForm(ModelForm):
+    class Meta:
+        model = CurrentMonth
+        fields = [
+            'year',
+            'month',
+            'work_days',
+        ]
+
+        labels = {
+            'year': 'Година',
+            'month': 'Месец',
+            'work_days': 'Работни дни',
+        }
+
+
+class DataFillForm(ModelForm):
+    class Meta:
+        model = WorkerMonth
+        exclude = {}

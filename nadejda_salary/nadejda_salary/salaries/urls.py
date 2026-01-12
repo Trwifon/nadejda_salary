@@ -1,9 +1,12 @@
 from django.urls import path, include
-from nadejda_salary.salaries.views import WorkerCreateView
+from .views import WorkerCreateView, MonthCreateView, DataFillView
 
 
 urlpatterns = [
     path('create-worker/', WorkerCreateView.as_view(), name='create_worker'),
+    path('create-month/', MonthCreateView.as_view(), name='create_month'),
+    path('data/', DataFillView.as_view(), name='data'),
+
     # path('show-report/', ReportShowView.as_view(), name='show_report'),
     # path('cash-report/', CashShowView.as_view(), name='cash_report'),
     # path('partner-create/', PartnerCreateView.as_view(), name='partner_create'),
