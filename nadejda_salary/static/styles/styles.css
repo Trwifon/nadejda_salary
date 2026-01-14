@@ -96,8 +96,8 @@ body {
 }
 
 td, th{
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 2px;
+    padding-left: 2px;
     text-align: center;
 }
 
@@ -111,7 +111,6 @@ td, th{
     font-weight: 600;
     color: black;
     margin: 5px;
-
 }
 
 .form-group {
@@ -119,7 +118,7 @@ td, th{
     border-radius: 10px;
     background-color: #d7f7db;
     min-width: 300px;
-    max-width: 350px;
+    max-width: 500px;
     margin: 10px auto;
     padding: 5px;
     text-align: center;
@@ -184,4 +183,24 @@ td, th{
     padding: 5px;
     flex-grow: 1;
 }
+
+table {
+    width: 110%;
+    border-collapse: collapse;
+}
+
+table :is(th, td) {
+    border: 1px solid #CCC;
+    padding: 0.5em 0.2em;
+}
+
+table th {
+    background: #DDD;
+    text-align: center;
+}
+
+table tr:nth-last-of-type(even) {
+    background: #EEE;
+}
+
 

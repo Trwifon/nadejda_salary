@@ -48,4 +48,20 @@ class MonthCreateForm(ModelForm):
 class DataFillForm(ModelForm):
     class Meta:
         model = WorkerMonth
-        exclude = {}
+        exclude = [
+            'worker',
+            'month',
+        ]
+
+        labels = {
+            'insurance': 'Осигуровки',
+            'work_hours': 'Изработени часове',
+            'sick_days_noi': 'Болнични от НОИ',
+            'sick_days_firm': 'Болнични от фирмата',
+            'vacation_used': 'Използвана отпуска',
+            'vacation_paid': 'Платена отпуска',
+            'paid_by_bank': 'Платено по банка',
+            'paid_by_cash': 'Платено',
+            'mobile': 'Мобилен телефон',
+            'voucher': 'Ваучери',
+        }

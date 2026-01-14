@@ -26,9 +26,9 @@ class MonthCreateView(PermissionRequiredMixin, CreateView):
     permission_required = ('salaries.add_currentmonth',)
 
     def get(self, request, *args, **kwargs):
-        open_month = CurrentMonth.objects.filter(open=True)
         form = self.form_class
 
+        open_month = CurrentMonth.objects.filter(open=True)
         if open_month:
             return HttpResponse('Имате неприключен месец.')
 
@@ -45,7 +45,28 @@ class DataFillView(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = {}
+
         worker_list = Workers.objects.all()
+        current_worker = worker_list[0]
         context['worker_list'] = worker_list
+        context['worker_pk'] = current_worker
+
+        form = DataFillForm
+        context['form'] = form
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = DataFillForm(request.POST)
+        month_pk = kwargs.get('month_pk')
+        current_month = CurrentMonth.objects.get(pk=month_pk)
+
+        worker_pk = kwargs.get('worker_pk')
+        current_worker = Workers.objects.get(pk=worker_pk)
+
+        print(current_month, current_worker)
+
+        if form.is_valid():
+            worker_mont = form.save(commit=False)
+
+        return HttpResponse()

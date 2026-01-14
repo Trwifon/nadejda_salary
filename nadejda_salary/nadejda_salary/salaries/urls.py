@@ -5,7 +5,7 @@ from .views import WorkerCreateView, MonthCreateView, DataFillView
 urlpatterns = [
     path('create-worker/', WorkerCreateView.as_view(), name='create_worker'),
     path('create-month/', MonthCreateView.as_view(), name='create_month'),
-    path('data/', DataFillView.as_view(), name='data'),
+    path('data/<int:month_pk>/<int:worker_pk>/', DataFillView.as_view(), name='data'),
 
     # path('show-report/', ReportShowView.as_view(), name='show_report'),
     # path('cash-report/', CashShowView.as_view(), name='cash_report'),

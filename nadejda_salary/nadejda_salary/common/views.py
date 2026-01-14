@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 # from nadejda_94_django.common.forms import PartnerForm, SearchForm
 # from nadejda_94_django.records.choices import users_dict
-from nadejda_salary.salaries.models import CurrentMonth
+from nadejda_salary.salaries.models import CurrentMonth, Workers
 # class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
 
@@ -26,19 +26,8 @@ class Dashboard(TemplateView, FormView):
         else:
             context['current_month'] = False
 
-        # create_form = PartnerForm
-        # context['create_form'] = create_form
-        #
-        # search_form = SearchForm()
-        # context['search_form'] = search_form
-
-        # day_report = (Record.objects.filter(created_at=date.today())
-        #               .filter(warehouse=users_dict[self.request.user.username])
-        #               .order_by('-id'))
-        # context['report'] = day_report
-        #
-        # total_sum = day_report.filter(order_type='C').aggregate(Sum('amount'))
-        # context['total_sum'] = total_sum['amount__sum']
+        first_worker = Workers.objects.all().first()
+        context['first_worker'] = first_worker.pk
 
         return context
 

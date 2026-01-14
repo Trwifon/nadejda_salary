@@ -2,45 +2,5 @@
 {% load static %}    
 
 {% block content %}
-    <div class="record-container">
-        <div>
-            <p class="info-text">Поръчка</p>
-            <div class="form-group">
-                    <h4>{{ partner.name }}</h4>
-                    <h5>Баланс: {{ partner.balance }} лв</h5>
-                    {% if record.order %}
-                        <h5>По поръчка {{ record.order }}</h5>                            
-                    {% endif %}
-                    <hr>
-                <form method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="form-space">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {{ field.help_text }}
-                            {{ field.error }}
-                            <br>
-                        </div>
-                    {% endfor %}
-                
-                    {% block extra_buttons %}
-                    {% endblock %}
-                
-                    <button name="save" class="buttons">Запис</button>
 
-                </form>
-                <form method="post">
-                    {% csrf_token %}
-                    {% if 'P' in record.order or 'A' in record.order%}
-                        <button name="import" class="buttons buttons--excel">SkyGlazing Excel</button>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-        <div>
-            {% block table %}
-            {% endblock table %}
-        </div>
-    </div>
 {% endblock content %}
