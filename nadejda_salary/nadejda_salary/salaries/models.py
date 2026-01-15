@@ -1,5 +1,5 @@
 from django.db import models
-from nadejda_salary.salaries.choices import WorkshopChoices, YearChoices, MonthChoices, WorkDaysChoices
+from .choices import WorkshopChoices, YearChoices, MonthChoices, WorkDaysChoices
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Workers(models.Model):

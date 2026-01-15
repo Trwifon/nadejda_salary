@@ -43,13 +43,35 @@ class DataFillView(PermissionRequiredMixin, CreateView):
     template_name = 'workers/data.html'
     permission_required = 'salaries.add_workermonth'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context = {}
 
-        worker_list = Workers.objects.all()
-        current_worker = worker_list[0]
+        current_month = CurrentMonth.objects.get(open=True)
+
+        workers = Workers.objects.filter(end_date=None)
+
+        worker_list = WorkerMonth.objects.filter(month=current_month)
+
+        if not worker_list:
+            for next_worker in workers:
+                new_data = WorkerMonth(
+                    insurance=0,
+                    work_hours=0,
+                    sick_days_noi=0,
+                    sick_days_firm=0,
+                    vacation_used=0,
+                    vacation_paid=0,
+                    paid_by_bank=0,
+                    paid_by_cash=0,
+                    mobile=0,
+                    voucher=0,
+                    worker=next_worker,
+                    month=current_month,
+                )
+                new_data.save()
+
+        worker_list = WorkerMonth.objects.filter(month=current_month)
         context['worker_list'] = worker_list
-        context['worker_pk'] = current_worker
 
         form = DataFillForm
         context['form'] = form
@@ -64,9 +86,7 @@ class DataFillView(PermissionRequiredMixin, CreateView):
         worker_pk = kwargs.get('worker_pk')
         current_worker = Workers.objects.get(pk=worker_pk)
 
-        print(current_month, current_worker)
-
         if form.is_valid():
-            worker_mont = form.save(commit=False)
+            worker_month = form.save(commit=False)
 
         return HttpResponse()

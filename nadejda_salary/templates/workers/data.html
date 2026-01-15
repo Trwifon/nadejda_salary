@@ -23,8 +23,19 @@
                 </tr>
                 {% for worker in worker_list %}
                     <tr class="{% if order.id == pk %}highlight{% endif %}">
-                        <td>{{worker.name}}</td>
-                        <td>{{worker.workshop}}</td>
+                        <td>{{worker.worker.name}}</td>
+                        <td>{{worker.worker.workshop}}</td>
+                        <td>{{worker.insurance}}</td>
+                        <td>{{worker.work_hours}}</td>
+                        <td>{{worker.sick_days_noi}}</td>
+                        <td>{{worker.sick_days_firm}}</td>
+                        <td>{{worker.vacation_used}}</td>
+                        <td>{{worker.vacation_paid}}</td>
+                        <td>{{worker.paid_by_bank}}</td>
+                        <td>{{worker.paid_by_cash}}</td>
+                        <td>{{worker.mobile}}</td>
+                        <td>{{worker.voucher}}</td>
+
                     </tr>
                 {% endfor %}
             </table>
