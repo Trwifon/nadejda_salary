@@ -21,7 +21,7 @@
                     <th>GSM</th>
                     <th>Ваучери</th>
                 </tr>
-                {% for worker in worker_list %}
+                {% for worker in worker_month_list %}
                     <tr class="{% if order.id == pk %}highlight{% endif %}">
                         <td>{{worker.worker.name}}</td>
                         <td>{{worker.worker.workshop}}</td>
@@ -35,7 +35,6 @@
                         <td>{{worker.paid_by_cash}}</td>
                         <td>{{worker.mobile}}</td>
                         <td>{{worker.voucher}}</td>
-
                     </tr>
                 {% endfor %}
             </table>
@@ -43,7 +42,7 @@
 
         <div>
             <form class="form-group mb-3 " method="post">
-                <h4>{{ current_worker }}</h4>
+                <h4>{{ name }}</h4>
                 <hr>
                 {% csrf_token %}
                 {% for field in form %}
@@ -52,8 +51,8 @@
                         {{ field }}
                     </div>
                 {% endfor %}
-                <button name="display" class = "buttons" type="submit">Предишен</button>
-                <button name="display" class = "buttons" type="submit">Следващ</button>
+                <button name="Previous" class = "buttons" type="submit">Предишен</button>
+                <button name="Next" class = "buttons" type="submit">Следващ</button>
             </form>
         </div>
     </div>

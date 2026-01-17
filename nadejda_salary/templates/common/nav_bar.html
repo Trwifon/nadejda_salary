@@ -22,7 +22,7 @@
     <ul class="navbar-center">
         <li>
             {% if current_month %}
-                <a class="link-nav" href="{% url 'data' current_month.pk first_worker %}">
+                <a class="link-nav" href="{% url 'data' 0 %}">
                     <span>Попълване на данни за месец: {{ current_month.month }}</span>
                 </a>
             {% else %}

@@ -2,6 +2,7 @@ from django.db import models
 from .choices import WorkshopChoices, YearChoices, MonthChoices, WorkDaysChoices
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 class Workers(models.Model):
     name = models.CharField(
         max_length=50,
@@ -117,8 +118,8 @@ class WorkerMonth(models.Model):
         related_name='current_month'
     )
 
-    def __str__(self):
-        return self.month
+    # def __str__(self):
+    #     return self.pk
 
     def __total_sick_days__(self):
         total = self.sick_days_noi + self.sick_days_firm
