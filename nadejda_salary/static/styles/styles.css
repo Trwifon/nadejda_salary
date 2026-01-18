@@ -191,16 +191,18 @@ table {
 
 table :is(th, td) {
     border: 1px solid #CCC;
-    padding: 0.5em 0.2em;
+    padding: 0.2em 0.2em;
 }
 
 table th {
-    background: #DDD;
+    background: #ebedd0;
     text-align: center;
 }
 
-table tr:nth-last-of-type(even) {
-    background: #EEE;
+table tr {
+    background: #ebedde
 }
+
+
 
 
