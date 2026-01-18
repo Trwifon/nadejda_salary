@@ -1,0 +1,17 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-group mb-3 " method="post">
+        <h4>Текущ месец</h4>
+        <hr>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-4">
+                {{ field.label }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button name="display" class = "buttons" type="submit">Запиши</button>
+    </form>
+{% endblock %}

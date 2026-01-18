@@ -1,0 +1,75 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h4>Служители</h4>
+            <table>
+                <tr class="text-center">
+                    <th>Име</th>
+                    <th>Цех</th>
+                    <th>Осиг.</th>
+                    <th>Часове</th>
+                    <th>
+                        <h6>Болн.</h6>
+                        <h6>НОИ</h6>
+                    </th>
+                    <th>
+                        <h6>Болн.</h6>
+                        <h6>фирма</h6>
+                    </th>
+                    <th>Отпуск</th>
+                    <th>Пл.отпуск</th>
+                    <th>Банка</th>
+                    <th>Други</th>
+                    <th>GSM</th>
+                    <th>Ваучери</th>
+                </tr>
+                {% for worker in worker_month_list %}
+                    <tr class="{% if worker.worker.name == current_data.worker.name %}highlight{% endif %}">
+                        <td>
+                            <a href="{% url 'data' forloop.counter0 %}">
+                                {{worker.worker.name}}
+                            </a>
+                        </td>
+                        <td>{{worker.worker.workshop}}</td>
+                        <td>{{worker.insurance}}</td>
+                        <td>{{worker.work_hours}}</td>
+                        <td>{{worker.sick_days_noi}}</td>
+                        <td>{{worker.sick_days_firm}}</td>
+                        <td>{{worker.vacation_used}}</td>
+                        <td>{{worker.vacation_paid}}</td>
+                        <td>{{worker.paid_by_bank}}</td>
+                        <td>{{worker.paid_by_cash}}</td>
+                        <td>{{worker.mobile}}</td>
+                        <td>{{worker.voucher}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div>
+            <form class="form-group mb-3 " method="post">
+                <h4>{{ current_data.worker.name }}</h4>
+                <hr>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-4">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button name="Previous" class = "buttons" type="submit">Предишен</button>
+                <button name="Next" class = "buttons" type="submit">Следващ</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

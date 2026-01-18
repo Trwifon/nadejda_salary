@@ -1,3 +1,51 @@
 from django.shortcuts import render
+from datetime import date
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum, Q
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, FormView
+# from nadejda_94_django.common.forms import PartnerForm, SearchForm
+# from nadejda_94_django.records.choices import users_dict
+from nadejda_salary.salaries.models import CurrentMonth, Workers
+# class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
-# Create your views here.
+
+class Dashboard(TemplateView, FormView):
+    template_name = 'common/dashboard.html'
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        context['current_path'] = self.request.path
+
+        open_month = CurrentMonth.objects.filter(open=True)
+        if open_month:
+            context['current_month'] = open_month[0]
+        else:
+            context['current_month'] = False
+
+        first_worker = Workers.objects.all().first()
+        context['first_worker'] = first_worker.pk
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('partner')
+
+        if 'create' in request.POST:
+            return redirect('record_create', pk)
+
+        if 'search' in request.POST:
+            context = {}
+            query = request.POST.get('search_field')
+
+            # if query:
+            #     report = ((Record.objects
+            #               .filter(Q(order__icontains=query) | Q(note__icontains=query)))
+            #               .order_by('-pk'))
+            #
+            #     context['report'] = report
+
+            return render(request, 'records/show_report.html', context)
