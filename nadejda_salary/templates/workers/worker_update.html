@@ -1,0 +1,54 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h4>Служители</h4>
+            <table>
+                <tr class="text-center">
+                    <th>Име</th>
+                    <th>Цех</th>
+                    <th>Заплата</th>
+                    <th>Постъпил на работа</th>
+                </tr>
+                {% for worker in worker_list %}
+                    <tr class="{% if worker.name == current_worker.name %}highlight{% endif %}">
+                        <td>
+                            <a href="{% url 'update_worker' forloop.counter0 %}">
+                                {{worker.name}}
+                            </a>
+                        </td>
+                        <td>{{worker.get_workshop_display}}</td>
+                        <td>{{worker.salary}}</td>
+                        <td>{{worker.start_date}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <form class="form-group mb-3 " method="post">
+                <h4>{{ current_worker.name }}</h4>
+                <h5>Цех: {{ current_worker.get_workshop_display }}</h5>
+                <h5>Постъпил: {{ current_worker.start_date }}</h5>
+                <hr>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-4">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button name="Previous" class = "buttons" type="submit">Предишен</button>
+                <button name="Next" class = "buttons" type="submit">Следващ</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

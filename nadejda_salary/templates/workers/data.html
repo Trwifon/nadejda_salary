@@ -27,7 +27,7 @@
                     <th>Ваучери</th>
                 </tr>
                 {% for worker in worker_month_list %}
-                    <tr class="{% if worker.worker.name == name %}highlight{% endif %}">
+                    <tr class="{% if worker.worker.name == current_data.worker.name %}highlight{% endif %}">
                         <td>
                             <a href="{% url 'data' forloop.counter0 %}">
                                 {{worker.worker.name}}
@@ -51,7 +51,7 @@
 
         <div>
             <form class="form-group mb-3 " method="post">
-                <h4>{{ name }}</h4>
+                <h4>{{ current_data.worker.name }}</h4>
                 <hr>
                 {% csrf_token %}
                 {% for field in form %}
@@ -65,7 +65,6 @@
             </form>
         </div>
     </div>
-
 {% endblock %}
 
 

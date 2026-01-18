@@ -3,9 +3,9 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView, FormView, UpdateView, DeleteView
+from django.views.generic import CreateView, TemplateView
 from .models import Workers, CurrentMonth, WorkerMonth
-from .forms import WorkerCreateForm, MonthCreateForm, DataFillForm
+from .forms import WorkerCreateForm, MonthCreateForm, DataFillForm, WorkerUpdateForm
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -80,13 +80,10 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
             order_by('worker__workshop', 'worker__name')
-
-        current_data = worker_month_list[index]
-
         context['worker_month_list'] = worker_month_list
 
-        name = current_data.worker.name
-        context['name'] = name
+        current_data = worker_month_list[index]
+        context['current_data'] = current_data
 
         form = DataFillForm
         context['form'] = form(instance=current_data)
@@ -117,3 +114,51 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
             index = index - 1 if index > 0 else index
 
         return redirect('data', index)
+
+
+class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
+    model = Workers
+    template_name = 'workers/worker_update.html'
+    permission_required = ('salaries.change_workers',)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        index = kwargs.get('index')
+        context['index'] = index
+
+        worker_list = Workers.objects.all().order_by('name')
+        context['worker_list'] = worker_list
+
+        current_worker = worker_list[index]
+        context['current_worker'] = current_worker
+
+        form = WorkerUpdateForm
+        context['form'] = form(instance=current_worker)
+
+        return context
+
+    def post(self, request, **kwargs):
+        index = kwargs.get('index')
+
+        worker_list = Workers.objects.all().order_by('name')
+        row_pk = worker_list[index].id
+        length = len(worker_list) -1
+
+        worker = get_object_or_404(Workers, id=row_pk)
+        form = WorkerUpdateForm(request.POST, instance=worker)
+
+        if form.is_valid():
+            form.save()
+
+        if 'Next' in request.POST:
+            index = index + 1 if index < length else index
+
+        if 'Previous' in request.POST:
+            index = index - 1 if index > 0 else index
+
+        return redirect('update_worker', index)
+
+
+
+

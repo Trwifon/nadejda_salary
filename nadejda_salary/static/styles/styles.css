@@ -95,12 +95,6 @@ body {
     border-radius: 5px;
 }
 
-td, th{
-    padding-right: 2px;
-    padding-left: 2px;
-    text-align: center;
-}
-
 .hr {
     margin: 0;
 }
@@ -166,7 +160,6 @@ td, th{
 .record-container {
     display: flex;
     justify-content: space-around;
-
     min-width: 800px;
     text-align: center;
 }

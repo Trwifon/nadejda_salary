@@ -56,12 +56,25 @@ class DataFillForm(ModelForm):
         labels = {
             'insurance': 'Осигуровки',
             'work_hours': 'Изработени часове',
-            'sick_days_noi': 'Болнични от НОИ',
-            'sick_days_firm': 'Болнични от фирмата',
+            'sick_days_noi': 'Болн. дни от НОИ',
+            'sick_days_firm': 'Болн. дни от фирмата',
             'vacation_used': 'Използвана отпуска',
             'vacation_paid': 'Платена отпуска',
-            'paid_by_bank': 'Платено по банка',
-            'paid_by_cash': 'Платено',
-            'mobile': 'Мобилен телефон',
+            'paid_by_bank': 'Изплатени по банка',
+            'paid_by_cash': 'Изплатени в брой',
+            'mobile': 'Сметка GSM',
             'voucher': 'Ваучери',
         }
+
+
+class WorkerUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Workers
+        fields = [
+            'salary',
+        ]
+
+        labels = {
+            'salary': 'Заплата',
+        }
+
