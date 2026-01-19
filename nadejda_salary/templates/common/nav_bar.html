@@ -31,12 +31,12 @@
         </li>
     </ul>
     <ul class="navbar-right">
+        <li>
+            <a class="link-nav" href="{% url 'update_worker' 0 %}">
+                <span>Служители</span>
+            </a>
+        </li>
         {% if user.is_staff %}
-            <li>
-                <a class="link-nav" href="{% url 'update_worker' 0 %}">
-                    <span>Служители</span>
-                </a>
-            </li>
             <li>
                 <a class="link-nav" href="{% url 'data' 1 %}">
                     <span>Текущ месец</span>

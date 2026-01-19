@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from .models import Workers, CurrentMonth, WorkerMonth
-from .forms import WorkerCreateForm, MonthCreateForm, DataFillForm, WorkerUpdateForm
+from .forms import WorkerCreateForm, MonthCreateForm, DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -122,6 +122,7 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
     permission_required = ('salaries.change_workers',)
 
     def get_context_data(self, **kwargs):
+        user = self.request.user
         context = {}
 
         index = kwargs.get('index')
@@ -133,12 +134,17 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         current_worker = worker_list[index]
         context['current_worker'] = current_worker
 
-        form = WorkerUpdateForm
+        if user.is_staff:
+            form = WorkerUpdateForm
+        else:
+            form = WorkerUpdateHRForm
+
         context['form'] = form(instance=current_worker)
 
         return context
 
     def post(self, request, **kwargs):
+        user = self.request.user
         index = kwargs.get('index')
 
         worker_list = Workers.objects.all().order_by('name')
@@ -146,7 +152,11 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         length = len(worker_list) -1
 
         worker = get_object_or_404(Workers, id=row_pk)
-        form = WorkerUpdateForm(request.POST, instance=worker)
+
+        if user.is_staff:
+            form = WorkerUpdateForm(request.POST, instance=worker)
+        else:
+            form = WorkerUpdateHRForm(request.POST, instance=worker)
 
         if form.is_valid():
             form.save()

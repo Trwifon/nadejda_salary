@@ -9,7 +9,9 @@
                 <tr class="text-center">
                     <th>Име</th>
                     <th>Цех</th>
-                    <th>Заплата</th>
+                    {% if user.is_staff %}
+                        <th>Заплата</th>
+                    {% endif %}
                     <th>Постъпил на работа</th>
                 </tr>
                 {% for worker in worker_list %}
@@ -20,7 +22,9 @@
                             </a>
                         </td>
                         <td>{{worker.get_workshop_display}}</td>
-                        <td>{{worker.salary}}</td>
+                        {% if user.is_staff %}
+                            <td>{{worker.salary}}</td>
+                        {% endif %}
                         <td>{{worker.start_date}}</td>
                     </tr>
                 {% endfor %}

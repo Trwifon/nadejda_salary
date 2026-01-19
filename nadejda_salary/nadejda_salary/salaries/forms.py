@@ -78,3 +78,21 @@ class WorkerUpdateForm(forms.ModelForm):
             'salary': 'Заплата',
         }
 
+
+class WorkerUpdateHRForm(forms.ModelForm):
+    class Meta:
+        model = Workers
+        fields = [
+            'end_date',
+        ]
+
+        labels = {
+            'end_date': 'Напуснал:',
+        }
+
+        widgets = {
+            'end_date': forms.TextInput(attrs={
+                'type': 'date',
+            }),
+        }
+
