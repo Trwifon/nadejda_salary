@@ -164,9 +164,9 @@ body {
     text-align: center;
 }
 
-.glass-container {
-    display: flex;
-    justify-content: space-around;
+.details {
+    padding: 0 0;
+    margin: 0 0;
 }
 
 .production-container{

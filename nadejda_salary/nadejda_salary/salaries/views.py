@@ -1,3 +1,5 @@
+import math
+
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.http import HttpResponse
@@ -170,5 +172,82 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         return redirect('update_worker', index)
 
 
+class DataUpdateView(PermissionRequiredMixin, TemplateView):
+    model = WorkerMonth
+    template_name = 'workers/data_update.html'
+    permission_required = ('salaries.change_workermonth',)
 
+    def get_context_data(self, **kwargs):
+        index = self.kwargs['index']
+        context = {}
 
+        current_month = CurrentMonth.objects.get(open=True)
+        month = current_month.month
+        year = current_month.year
+
+        worker_month_list = WorkerMonth.objects.\
+            filter(month=current_month).\
+            order_by('worker__workshop', 'worker__name')
+        context['worker_month_list'] = worker_month_list
+
+        current_data = worker_month_list[index]
+        context['current_data'] = current_data
+
+        gross = current_data.worker.salary + current_data.insurance
+        context['gross'] = gross
+
+        equivalent_hours = math.ceil(current_data.work_hours / 8) * 8
+        context['equivalent_hours'] = equivalent_hours
+
+        unpaid_hours = equivalent_hours - current_data.work_hours
+        context['unpaid_hours'] = unpaid_hours
+
+        equivalent_days = equivalent_hours / 8
+        context['equivalent_days'] = round(equivalent_days, 0)
+
+        salary_earned = (current_data.work_hours / (current_month.work_days * 8)) * current_data.worker.salary
+        context['salary_earned'] = salary_earned
+
+        sick_days_sum = current_data.sick_days_firm * 35
+        context['sick_days_sum'] = sick_days_sum
+
+        vacation_calc = current_month.work_days\
+                        - current_data.sick_days_firm\
+                        - current_data.sick_days_noi\
+                        - current_data.vacation_used\
+                        - equivalent_days
+        vacation_calc = 0 if vacation_calc < 0 else vacation_calc
+        context['vacation_calc'] = vacation_calc
+
+        vacation_sum = current_data.vacation_used + vacation_calc
+        context['vacation_sum'] = vacation_sum
+
+        pay_for_vacation = vacation_sum * 50
+        context['pay_for_vacation'] = pay_for_vacation
+
+        total = salary_earned + sick_days_sum + pay_for_vacation
+        context['total'] = total
+
+        unpaid_hours_euro = current_data.insurance / current_month.work_days / 8 * unpaid_hours
+        context['unpaid_hours_euro'] = unpaid_hours_euro
+
+        rest = total\
+               - float(unpaid_hours_euro)\
+               - float(current_data.paid_by_bank)\
+               - float(current_data.paid_by_cash)\
+               - float(current_data.mobile)\
+               - float(current_data.voucher)
+        context['rest'] = rest
+
+        total_paid = rest\
+                    + float(unpaid_hours_euro)\
+                    + float(current_data.paid_by_bank)\
+                    + float(current_data.paid_by_cash)\
+                    + float(current_data.mobile)\
+                    + float(current_data.voucher)
+        context['total_paid'] = total_paid
+
+        form = DataFillForm
+        context['form'] = form(instance=current_data)
+
+        return context

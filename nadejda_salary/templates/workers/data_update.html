@@ -1,0 +1,139 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h4>Служители</h4>
+            <table>
+                <tr class="text-center">
+                    <th>Име</th>
+                    <th>Цех</th>
+                    <th>Заплата</th>
+                </tr>
+                {% for worker in worker_list %}
+                    <tr class="{% if worker.name == current_worker.name %}highlight{% endif %}">
+                        <td>
+                            <a href="{% url 'update_worker' forloop.counter0 %}">
+                                {{worker.name}}
+                            </a>
+                        </td>
+                        <td>{{worker.get_workshop_display}}</td>
+                        <td>{{worker.salary}}</td>
+                        <td>{{worker.start_date}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <h4>Фиш</h4>
+            <table>
+                <tr class="text-center">
+                    <th>Заплата нето</th>
+                    <th>Осигуровки</th>
+                    <th>Заплата бруто</th>
+                </tr>
+                <tr class="text-center">
+                    <td>{{ current_data.worker.salary }}</td>
+                    <td>{{ current_data.insurance }}</td>
+                    <td>{{ gross }}</td>
+                </tr>
+            </table>
+            <table>
+                <tr class="text-center">
+                    <th>Изработени часове</th>
+                    <th>Непл. часове</th>
+                    <th>Зaкръглени часове</th>
+                    <th>Дни</th>
+                    <th>Сума</th>
+                </tr>
+                <tr class="text-center">
+                    <td>{{ current_data.work_hours }}</td>
+                    <td>{{ unpaid_hours }}</td>
+                    <td>{{ equivalent_hours }}</td>
+                    <td>{{ equivalent_days|floatformat:0 }}</td>
+                    <td>{{ salary_earned|floatformat:2 }}</td>
+                </tr>
+            </table>
+            <table>
+                <tr class="text-center">
+                    <th>Болн. НОИ</th>
+                    <th>Болн. фирма</th>
+                    <th>Болн. сума</th>
+                </tr>
+                <tr class="text-center">
+                    <td>{{ current_data.sick_days_noi }}</td>
+                    <td>{{ current_data.sick_days_firm }}</td>
+                    <td>{{ sick_days_sum }}</td>
+                </tr>
+            </table>
+            <table>
+                <tr class="text-center">
+                    <th>Отп. редовна</th>
+                    <th>Отп. без молба</th>
+                    <th>Отп. общо</th>
+                    <th>Отп. сума</th>
+                    <th>Изплатена отп.</th>
+                </tr>
+                <tr class="text-center">
+                    <td>{{ current_data.vacation_used }}</td>
+                    <td>{{ vacation_calc }}</td>
+                    <td>{{ vacation_sum }}</td>
+                    <td>{{ pay_for_vacation }}</td>
+                    <td>{{ current_data.vacation_paid }}</td>
+                </tr>
+            </table>
+            <table>
+                <tr class="text-center">
+                    <th>Сума</th>
+                    <th>Непл. часове лв</th>
+                    <th>Банка</th>
+                    <th>Аванс</th>
+                    <th>GSM</th>
+                    <th>Ваучер</th>
+
+                </tr>
+                <tr class="text-center">
+                    <td>{{ total|floatformat:2 }}</td>
+                    <td>{{ unpaid_hours_euro|floatformat:2 }}</td>
+                    <td>{{ current_data.paid_by_bank }}</td>
+                    <td>{{ current_data.paid_by_cash }}</td>
+                    <td>{{ current_data.mobile }}</td>
+                    <td>{{ current_data.voucher }}</td>
+                </tr>
+            </table>
+            <table>
+                <tr class="text-center">
+                    <th>Остатък за плащане</th>
+                    <th>Всичко платено</th>
+                </tr>
+                <tr class="text-center">
+                    <td>{{ rest|floatformat:2 }}</td>
+                    <td>{{ total_paid|floatformat:2 }}</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <form class="form-group mb-3 " method="post">
+                <h4>{{ current_data.worker.name }}</h4>
+                <hr>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-4">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button name="Previous" class = "buttons" type="submit">Предишен</button>
+                <button name="Next" class = "buttons" type="submit">Следващ</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
