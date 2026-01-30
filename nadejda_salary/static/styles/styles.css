@@ -90,6 +90,11 @@ body {
     color: black;
 }
 
+.link {
+    font-size: 17px;
+    color: blue;
+}
+
 .logo {
     border: 1px solid darkblue;
     border-radius: 5px;
@@ -194,6 +199,10 @@ table th {
 
 table tr {
     background: #ebedde
+}
+
+.table-list {
+    width: 100%
 }
 
 

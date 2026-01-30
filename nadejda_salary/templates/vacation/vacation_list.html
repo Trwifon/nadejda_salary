@@ -1,0 +1,28 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h4>Служители</h4>
+            <table class="table-list">
+                <tr class="text-center">
+                    <th>Име</th>
+                    <th>Цех</th>
+                    <th>Оставаща отпуска</th>
+                </tr>
+                {% for vacation in vacations %}
+                    <tr class="text-center">
+                        <td>{{ vacation.name}}</td>
+                        <td>{{ vacation.get_workshop_display }}</td>
+                        <td>
+                            <a href="{% url 'dashboard' %}">
+                                {{ vacation.total_vacation }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

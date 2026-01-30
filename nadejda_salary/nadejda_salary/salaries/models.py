@@ -22,6 +22,8 @@ class Workers(models.Model):
         null=True,
     )
 
+    initial_vacation = models.PositiveSmallIntegerField()
+
     start_date = models.DateField(
         blank=True,
         null=True,
@@ -83,6 +85,8 @@ class WorkerMonth(models.Model):
 
     sick_days_firm = models.PositiveSmallIntegerField()
 
+    vacation_to_add = models.PositiveSmallIntegerField()
+
     vacation_used = models.PositiveSmallIntegerField()
 
     vacation_paid = models.PositiveSmallIntegerField()
@@ -117,13 +121,6 @@ class WorkerMonth(models.Model):
         on_delete=models.DO_NOTHING,
         related_name='current_month'
     )
-
-    # def __str__(self):
-    #     return self.pk
-
-    def __total_sick_days__(self):
-        total = self.sick_days_noi + self.sick_days_firm
-        return total
 
 
 class Vacation(models.Model):

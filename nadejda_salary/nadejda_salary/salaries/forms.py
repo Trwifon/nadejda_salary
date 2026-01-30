@@ -1,7 +1,6 @@
 from datetime import datetime
 from django.forms import ModelForm
 from django import forms
-# from .choices import WarehouseChoices, ReportChoices
 from .models import Workers, CurrentMonth, WorkerMonth
 
 
@@ -13,13 +12,15 @@ class WorkerCreateForm(ModelForm):
             'workshop',
             'contract',
             'start_date',
+            'initial_vacation'
         ]
 
         labels = {
             'name': 'Име',
             'workshop': 'Цех',
             'contract': 'Договор',
-            'start_date': 'Започнал на:'
+            'start_date': 'Започнал на:',
+            'initial_vacation': 'Начална отпуска',
         }
 
         widgets = {
@@ -51,6 +52,7 @@ class DataFillForm(ModelForm):
         exclude = [
             'worker',
             'month',
+            'vacation_to_add'
         ]
 
         labels = {
@@ -96,3 +98,14 @@ class WorkerUpdateHRForm(forms.ModelForm):
             }),
         }
 
+
+class DataUpdateForm(forms.ModelForm):
+    class Meta:
+        model = WorkerMonth
+        fields = [
+            'paid_by_cash',
+        ]
+
+        labels = {
+            'paid_by_cash': 'Корекция'
+        }

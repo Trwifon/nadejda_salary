@@ -1,0 +1,85 @@
+{% extends 'common/create.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h4>Служители</h4>
+            <table class="table-list">
+                <tr class="text-center">
+                    <th>Име</th>
+                    <th>Цех</th>
+                    <th>Запл.</th>
+                    <th>Осиг.</th>
+                    <th>Запл. бруто</th>
+                    <th>Израб. час.</th>
+                    <th>Непл. час.</th>
+                    <th>Зaкр. час.</th>
+                    <th>Дни</th>
+                    <th>Сума</th>
+                    <th>Болн. НОИ</th>
+                    <th>Болн. фирма</th>
+                    <th>Болн. сума</th>
+                    <th>Отп. ред.</th>
+                    <th>Отп. без молба</th>
+                    <th>Отп. общо</th>
+                    <th>Отп. сума</th>
+                    <th>Изпл. отп.</th>
+                    <th>Сума</th>
+                    <th>Непл. час. лв</th>
+                    <th>Банка</th>
+                    <th>Аванс Корек.</th>
+                    <th>GSM</th>
+                    <th>Ваучер</th>
+                    <th>Ост.</th>
+                    <th>Всичко плат.</th>
+                </tr>
+                {% for worker in workers %}
+                    <tr class="text-center">
+                        <td>{{ worker.worker.name}}</td>
+                        <td>{{ worker.worker.get_workshop_display }}</td>
+                        <td>
+                            <a href="{% url 'update_worker' worker.index %}">
+                                {{ worker.worker.salary }}
+                            </a>
+                        </td>
+                        <td>{{ worker.insurance }}</td>
+                        <td>{{ worker.gross }}</td>
+                        <td>{{ worker.work_hours }}</td>
+                        <td>{{ worker.unpaid_hours }}</td>
+                        <td>{{ worker.equivalent_hours }}</td>
+                        <td>{{ worker.equivalent_days|floatformat:0 }}</td>
+                        <td>{{ worker.salary_earned|floatformat:2 }}</td>
+                        <td>{{ worker.sick_days_noi }}</td>
+                        <td>{{ worker.sick_days_firm }}</td>
+                        <td>{{ worker.sick_days_sum }}</td>
+                        <td>{{ worker.vacation_used|floatformat:0 }}</td>
+                        <td>{{ worker.vacation_calc|floatformat:0 }}</td>
+                        <td>{{ worker.vacation_sum|floatformat:0 }}</td>
+                        <td>{{ worker.pay_for_vacation }}</td>
+                        <td>{{ worker.vacation_paid }}</td>
+                        <td>{{ worker.total|floatformat:2 }}</td>
+                        <td>{{ worker.unpaid_hours_euro|floatformat:2 }}</td>
+                        <td>{{ worker.paid_by_bank }}</td>
+                        <td>
+                            <a href="{% url 'update_data' worker.pk %}" >
+                                {{ worker.paid_by_cash }}
+                            </a>
+                        </td>
+                        <td>{{ worker.mobile }}</td>
+                        <td>{{ worker.voucher }}</td>
+                        <td>{{ worker.rest|floatformat:2 }}</td>
+                        <td>{{ worker.total_paid|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

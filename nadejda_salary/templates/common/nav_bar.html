@@ -18,12 +18,19 @@
                 <span>Нов месец</span>
             </a>
         </li>
+                <li>
+            <a class="link-nav" href="{% url 'list_vacation' %}">
+                <span>Отпуски</span>
+            </a>
+        </li>
     </ul>
     <ul class="navbar-center">
         <li>
             {% if current_month %}
                 <a class="link-nav" href="{% url 'data' 0 %}">
-                    <span>Попълване на данни за месец: {{ current_month.month }}</span>
+                    <span>Месец: {{ current_month.get_month_display }}</span>
+                    <span>{{ current_month.year }} г.</span>
+                    <span>- {{ current_month.work_days}} раб. дни</span>
                 </a>
             {% else %}
                 <span>Няма активен месец</span>
@@ -38,7 +45,7 @@
         </li>
         {% if user.is_staff %}
             <li>
-                <a class="link-nav" href="{% url 'update_data' 0 %}">
+                <a class="link-nav" href="{% url 'list_data' %}">
                     <span>Текущ месец</span>
                 </a>
             </li>

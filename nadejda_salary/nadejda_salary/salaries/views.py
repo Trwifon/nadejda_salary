@@ -1,13 +1,13 @@
-import math
-
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
+from .helpers import worker_month_calc
 from .models import Workers, CurrentMonth, WorkerMonth
-from .forms import WorkerCreateForm, MonthCreateForm, DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm
+from .forms import WorkerCreateForm, MonthCreateForm, \
+    DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm, DataUpdateForm
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -68,6 +68,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     work_hours=0,
                     sick_days_noi=0,
                     sick_days_firm=0,
+                    vacation_to_add=0,
                     vacation_used=0,
                     vacation_paid=0,
                     paid_by_bank=0,
@@ -78,6 +79,11 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     month=current_month,
                 )
                 new_data.save()
+
+                if current_month in (11, 12):
+                    new_data.vacation_to_add = 1
+                else:
+                    new_data.vacation_to_add = 1.8
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
@@ -121,7 +127,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
 class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
     model = Workers
     template_name = 'workers/worker_update.html'
-    permission_required = ('salaries.change_workers',)
+    permission_required = 'salaries.change_workers'
 
     def get_context_data(self, **kwargs):
         user = self.request.user
@@ -150,10 +156,11 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         index = kwargs.get('index')
 
         worker_list = Workers.objects.all().order_by('name')
-        row_pk = worker_list[index].id
+        worker_pk = worker_list[index].id
+
         length = len(worker_list) -1
 
-        worker = get_object_or_404(Workers, id=row_pk)
+        worker = get_object_or_404(Workers, id=worker_pk)
 
         if user.is_staff:
             form = WorkerUpdateForm(request.POST, instance=worker)
@@ -172,82 +179,58 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         return redirect('update_worker', index)
 
 
-class DataUpdateView(PermissionRequiredMixin, TemplateView):
+class DataListView(PermissionRequiredMixin, TemplateView):
     model = WorkerMonth
-    template_name = 'workers/data_update.html'
+    template_name = 'workers/data_list.html'
     permission_required = ('salaries.change_workermonth',)
 
     def get_context_data(self, **kwargs):
-        index = self.kwargs['index']
         context = {}
 
         current_month = CurrentMonth.objects.get(open=True)
-        month = current_month.month
-        year = current_month.year
+        context['current_month'] = current_month
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
             order_by('worker__workshop', 'worker__name')
-        context['worker_month_list'] = worker_month_list
 
-        current_data = worker_month_list[index]
-        context['current_data'] = current_data
+        workers = {}
 
-        gross = current_data.worker.salary + current_data.insurance
-        context['gross'] = gross
+        for worker in worker_month_list:
+            worker.index = list(worker_month_list).index(worker)
+            print(worker.index)
+            worker = worker_month_calc(worker, current_month)
+            workers[worker] = worker
 
-        equivalent_hours = math.ceil(current_data.work_hours / 8) * 8
-        context['equivalent_hours'] = equivalent_hours
-
-        unpaid_hours = equivalent_hours - current_data.work_hours
-        context['unpaid_hours'] = unpaid_hours
-
-        equivalent_days = equivalent_hours / 8
-        context['equivalent_days'] = round(equivalent_days, 0)
-
-        salary_earned = (current_data.work_hours / (current_month.work_days * 8)) * current_data.worker.salary
-        context['salary_earned'] = salary_earned
-
-        sick_days_sum = current_data.sick_days_firm * 35
-        context['sick_days_sum'] = sick_days_sum
-
-        vacation_calc = current_month.work_days\
-                        - current_data.sick_days_firm\
-                        - current_data.sick_days_noi\
-                        - current_data.vacation_used\
-                        - equivalent_days
-        vacation_calc = 0 if vacation_calc < 0 else vacation_calc
-        context['vacation_calc'] = vacation_calc
-
-        vacation_sum = current_data.vacation_used + vacation_calc
-        context['vacation_sum'] = vacation_sum
-
-        pay_for_vacation = vacation_sum * 50
-        context['pay_for_vacation'] = pay_for_vacation
-
-        total = salary_earned + sick_days_sum + pay_for_vacation
-        context['total'] = total
-
-        unpaid_hours_euro = current_data.insurance / current_month.work_days / 8 * unpaid_hours
-        context['unpaid_hours_euro'] = unpaid_hours_euro
-
-        rest = total\
-               - float(unpaid_hours_euro)\
-               - float(current_data.paid_by_bank)\
-               - float(current_data.paid_by_cash)\
-               - float(current_data.mobile)\
-               - float(current_data.voucher)
-        context['rest'] = rest
-
-        total_paid = rest\
-                    + float(unpaid_hours_euro)\
-                    + float(current_data.paid_by_bank)\
-                    + float(current_data.paid_by_cash)\
-                    + float(current_data.mobile)\
-                    + float(current_data.voucher)
-        context['total_paid'] = total_paid
-
-        form = DataFillForm
-        context['form'] = form(instance=current_data)
+        context['workers'] = workers
 
         return context
+
+
+class DataUpdateView(PermissionRequiredMixin, UpdateView):
+    model = WorkerMonth
+    form_class = DataUpdateForm
+    template_name = 'workers/data_update.html'
+    permission_required = 'salaries.change_workers'
+    success_url = reverse_lazy('list_data')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        form = DataUpdateForm(instance=self.object)
+        current_data = WorkerMonth.objects.get(pk=self.kwargs['pk'])
+
+        context['form'] = form
+        context['current_data'] = current_data
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = DataUpdateForm(request.POST)
+        self.object = self.get_object()
+
+        if form.is_valid():
+            self.object.save()
+            print(self.object.paid_by_cash)
+
+        return super().post(request, *args, **kwargs)

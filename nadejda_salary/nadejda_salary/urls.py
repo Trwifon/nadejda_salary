@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('nadejda_salary.common.urls')),
     path('accounts/', include('nadejda_salary.accounts.urls')),
     path('salaries/', include('nadejda_salary.salaries.urls')),
+    path('vacation/', include('nadejda_salary.vacation.urls')),
 ]
