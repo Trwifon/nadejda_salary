@@ -7,7 +7,8 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 from .helpers import worker_month_calc
 from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
-    DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm, DataUpdateForm, CloseMonthForm
+    DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
+    DataUpdateForm, CloseMonthForm
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -80,10 +81,10 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                 )
                 new_data.save()
 
-                if current_month in (11, 12):
-                    new_data.vacation_to_add = 1.5
-                else:
-                    new_data.vacation_to_add = 1.7
+                # if current_month in (11, 12):
+                #     new_data.vacation_to_add = 1.5
+                # else:
+                #     new_data.vacation_to_add = 1.7
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
