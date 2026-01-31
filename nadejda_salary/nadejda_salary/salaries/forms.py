@@ -52,7 +52,9 @@ class DataFillForm(ModelForm):
         exclude = [
             'worker',
             'month',
-            'vacation_to_add'
+            'vacation_to_add',
+            'salary',
+            'vacation_calc',
         ]
 
         labels = {
@@ -109,3 +111,8 @@ class DataUpdateForm(forms.ModelForm):
         labels = {
             'paid_by_cash': 'Корекция'
         }
+
+
+class CloseMonthForm(forms.Form):
+    class Meta:
+        fields = []

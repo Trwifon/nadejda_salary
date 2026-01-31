@@ -4,7 +4,11 @@
 {% block content %}
     <div class="record-container">
         <div>
-            <h4>Служители</h4>
+            <h5>
+                <span>Месец: {{ current_month.get_month_display }}</span>
+                <span>{{ current_month.year }} г.</span>
+                <span>- {{ current_month.work_days}} раб. дни</span>
+            </h5>
             <table class="table-list">
                 <tr class="text-center">
                     <th>Име</th>

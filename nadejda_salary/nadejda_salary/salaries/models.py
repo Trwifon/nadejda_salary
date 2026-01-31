@@ -73,11 +73,16 @@ class CurrentMonth(models.Model):
 
 
 class WorkerMonth(models.Model):
+    salary = models.PositiveSmallIntegerField(
+        default=0,
+    )
+
     insurance = models.DecimalField(
         max_digits=6,
         decimal_places=2,
         validators=[MinValueValidator(0)],
     )
+
 
     work_hours = models.PositiveSmallIntegerField()
 
@@ -88,6 +93,8 @@ class WorkerMonth(models.Model):
     vacation_to_add = models.PositiveSmallIntegerField()
 
     vacation_used = models.PositiveSmallIntegerField()
+
+    vacation_calc = models.PositiveSmallIntegerField()
 
     vacation_paid = models.PositiveSmallIntegerField()
 

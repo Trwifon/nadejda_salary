@@ -7,7 +7,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 from .helpers import worker_month_calc
 from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
-    DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm, DataUpdateForm
+    DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm, DataUpdateForm, CloseMonthForm
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -81,9 +81,9 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                 new_data.save()
 
                 if current_month in (11, 12):
-                    new_data.vacation_to_add = 1
+                    new_data.vacation_to_add = 1.5
                 else:
-                    new_data.vacation_to_add = 1.8
+                    new_data.vacation_to_add = 1.7
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
@@ -198,9 +198,13 @@ class DataListView(PermissionRequiredMixin, TemplateView):
 
         for worker in worker_month_list:
             worker.index = list(worker_month_list).index(worker)
-            print(worker.index)
+
+            worker.salary = worker.worker.salary
+
             worker = worker_month_calc(worker, current_month)
             workers[worker] = worker
+
+            worker.save()
 
         context['workers'] = workers
 
@@ -231,6 +235,41 @@ class DataUpdateView(PermissionRequiredMixin, UpdateView):
 
         if form.is_valid():
             self.object.save()
-            print(self.object.paid_by_cash)
 
         return super().post(request, *args, **kwargs)
+
+
+class CloseMonthView(TemplateView):
+    template_name = 'months/month_close.html'
+    success_url = reverse_lazy('list_data')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        month = CurrentMonth.objects.get(pk=self.kwargs['pk'])
+        context['current_month'] = month
+
+        return context
+
+    def post(self, request,  **kwargs):
+        pk = kwargs.get('pk')
+        form = CloseMonthForm(request.POST)
+
+        if form.is_valid:
+            if 'yes' in request.POST:
+                month = CurrentMonth.objects.get(pk=pk)
+                month.open = False
+                month.save()
+            else:
+                return redirect('dashboard')
+
+        return redirect('dashboard')
+
+
+
+
+
+
+
+
+

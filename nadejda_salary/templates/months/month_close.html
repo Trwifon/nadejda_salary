@@ -1,0 +1,15 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form method="post" class="form-group">
+        <h4>
+            Ще затворите месец {{ current_month.get_month_display }} {{ current_month.year }} год.
+        </h4>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="buttons" name="yes">ОК</button>
+        <button type="submit" class="buttons" name="no">Откажи</button>
+    </form>
+{% endblock %}
+

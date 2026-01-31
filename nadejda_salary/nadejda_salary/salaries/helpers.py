@@ -2,7 +2,7 @@ import math
 
 
 def worker_month_calc(worker, current_month):
-    worker.gross = worker.worker.salary + worker.insurance
+    worker.gross = worker.salary + worker.insurance
 
     worker.equivalent_hours = math.ceil(worker.work_hours / 8) * 8
     worker.unpaid_hours = worker.equivalent_hours - worker.work_hours

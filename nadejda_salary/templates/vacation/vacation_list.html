@@ -16,7 +16,7 @@
                         <td>{{ vacation.name}}</td>
                         <td>{{ vacation.get_workshop_display }}</td>
                         <td>
-                            <a href="{% url 'dashboard' %}">
+                            <a href="{% url 'display_vacation' vacation.pk %}">
                                 {{ vacation.total_vacation }}
                             </a>
                         </td>
@@ -26,3 +26,4 @@
         </div>
     </div>
 {% endblock %}
+
