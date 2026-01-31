@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'nadejda_salary.common',
     'nadejda_salary.accounts',
     'nadejda_salary.salaries',
+    'nadejda_salary.vacation',
 ]
 
 MIDDLEWARE = [

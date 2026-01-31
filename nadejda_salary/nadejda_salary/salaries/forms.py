@@ -1,7 +1,6 @@
 from datetime import datetime
 from django.forms import ModelForm
 from django import forms
-# from .choices import WarehouseChoices, ReportChoices
 from .models import Workers, CurrentMonth, WorkerMonth
 
 
@@ -13,13 +12,15 @@ class WorkerCreateForm(ModelForm):
             'workshop',
             'contract',
             'start_date',
+            'initial_vacation'
         ]
 
         labels = {
             'name': 'Име',
             'workshop': 'Цех',
             'contract': 'Договор',
-            'start_date': 'Започнал на:'
+            'start_date': 'Започнал на:',
+            'initial_vacation': 'Начална отпуска',
         }
 
         widgets = {
@@ -51,6 +52,9 @@ class DataFillForm(ModelForm):
         exclude = [
             'worker',
             'month',
+            'vacation_to_add',
+            'salary',
+            'vacation_calc',
         ]
 
         labels = {
@@ -59,7 +63,7 @@ class DataFillForm(ModelForm):
             'sick_days_noi': 'Болн. дни от НОИ',
             'sick_days_firm': 'Болн. дни от фирмата',
             'vacation_used': 'Използвана отпуска',
-            'vacation_paid': 'Платена отпуска',
+            'vacation_paid': 'Изплатена отпуска',
             'paid_by_bank': 'Изплатени по банка',
             'paid_by_cash': 'Изплатени в брой',
             'mobile': 'Сметка GSM',
@@ -78,3 +82,37 @@ class WorkerUpdateForm(forms.ModelForm):
             'salary': 'Заплата',
         }
 
+
+class WorkerUpdateHRForm(forms.ModelForm):
+    class Meta:
+        model = Workers
+        fields = [
+            'end_date',
+        ]
+
+        labels = {
+            'end_date': 'Напуснал:',
+        }
+
+        widgets = {
+            'end_date': forms.TextInput(attrs={
+                'type': 'date',
+            }),
+        }
+
+
+class DataUpdateForm(forms.ModelForm):
+    class Meta:
+        model = WorkerMonth
+        fields = [
+            'paid_by_cash',
+        ]
+
+        labels = {
+            'paid_by_cash': 'Корекция'
+        }
+
+
+class CloseMonthForm(forms.Form):
+    class Meta:
+        fields = []

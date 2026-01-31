@@ -3,9 +3,12 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
+from .helpers import worker_month_calc
 from .models import Workers, CurrentMonth, WorkerMonth
-from .forms import WorkerCreateForm, MonthCreateForm, DataFillForm, WorkerUpdateForm
+from .forms import WorkerCreateForm, MonthCreateForm, \
+    DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
+    DataUpdateForm, CloseMonthForm
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -66,6 +69,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     work_hours=0,
                     sick_days_noi=0,
                     sick_days_firm=0,
+                    vacation_to_add=0,
                     vacation_used=0,
                     vacation_paid=0,
                     paid_by_bank=0,
@@ -76,6 +80,11 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     month=current_month,
                 )
                 new_data.save()
+
+                # if current_month in (11, 12):
+                #     new_data.vacation_to_add = 1.5
+                # else:
+                #     new_data.vacation_to_add = 1.7
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
@@ -119,9 +128,10 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
 class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
     model = Workers
     template_name = 'workers/worker_update.html'
-    permission_required = ('salaries.change_workers',)
+    permission_required = 'salaries.change_workers'
 
     def get_context_data(self, **kwargs):
+        user = self.request.user
         context = {}
 
         index = kwargs.get('index')
@@ -133,20 +143,30 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         current_worker = worker_list[index]
         context['current_worker'] = current_worker
 
-        form = WorkerUpdateForm
+        if user.is_staff:
+            form = WorkerUpdateForm
+        else:
+            form = WorkerUpdateHRForm
+
         context['form'] = form(instance=current_worker)
 
         return context
 
     def post(self, request, **kwargs):
+        user = self.request.user
         index = kwargs.get('index')
 
         worker_list = Workers.objects.all().order_by('name')
-        row_pk = worker_list[index].id
+        worker_pk = worker_list[index].id
+
         length = len(worker_list) -1
 
-        worker = get_object_or_404(Workers, id=row_pk)
-        form = WorkerUpdateForm(request.POST, instance=worker)
+        worker = get_object_or_404(Workers, id=worker_pk)
+
+        if user.is_staff:
+            form = WorkerUpdateForm(request.POST, instance=worker)
+        else:
+            form = WorkerUpdateHRForm(request.POST, instance=worker)
 
         if form.is_valid():
             form.save()
@@ -158,6 +178,98 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
             index = index - 1 if index > 0 else index
 
         return redirect('update_worker', index)
+
+
+class DataListView(PermissionRequiredMixin, TemplateView):
+    model = WorkerMonth
+    template_name = 'workers/data_list.html'
+    permission_required = ('salaries.change_workermonth',)
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        current_month = CurrentMonth.objects.get(open=True)
+        context['current_month'] = current_month
+
+        worker_month_list = WorkerMonth.objects.\
+            filter(month=current_month).\
+            order_by('worker__workshop', 'worker__name')
+
+        workers = {}
+
+        for worker in worker_month_list:
+            worker.index = list(worker_month_list).index(worker)
+
+            worker.salary = worker.worker.salary
+
+            worker = worker_month_calc(worker, current_month)
+            workers[worker] = worker
+
+            worker.save()
+
+        context['workers'] = workers
+
+        return context
+
+
+class DataUpdateView(PermissionRequiredMixin, UpdateView):
+    model = WorkerMonth
+    form_class = DataUpdateForm
+    template_name = 'workers/data_update.html'
+    permission_required = 'salaries.change_workers'
+    success_url = reverse_lazy('list_data')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        form = DataUpdateForm(instance=self.object)
+        current_data = WorkerMonth.objects.get(pk=self.kwargs['pk'])
+
+        context['form'] = form
+        context['current_data'] = current_data
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = DataUpdateForm(request.POST)
+        self.object = self.get_object()
+
+        if form.is_valid():
+            self.object.save()
+
+        return super().post(request, *args, **kwargs)
+
+
+class CloseMonthView(TemplateView):
+    template_name = 'months/month_close.html'
+    success_url = reverse_lazy('list_data')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        month = CurrentMonth.objects.get(pk=self.kwargs['pk'])
+        context['current_month'] = month
+
+        return context
+
+    def post(self, request,  **kwargs):
+        pk = kwargs.get('pk')
+        form = CloseMonthForm(request.POST)
+
+        if form.is_valid:
+            if 'yes' in request.POST:
+                month = CurrentMonth.objects.get(pk=pk)
+                month.open = False
+                month.save()
+            else:
+                return redirect('dashboard')
+
+        return redirect('dashboard')
+
+
+
+
+
 
 
 

@@ -1,0 +1,63 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h4>
+                {{ current_worker.name}}
+            </h4>
+            <h5>
+                Първоначална отпуска - {{ current_worker.initial_vacation }} дни
+            </h5>
+            <table class="table-list">
+                <tr class="text-center">
+                    <th>Година</th>
+                    <th>Месец</th>
+                    <th>Използвана</th>
+                    <th>Начислена</th>
+                    <th>Платена</th>
+                    <th>За месеца</th>
+                    <th>С натрупване</th>
+                    <th>Изработена</th>
+                    <th>Всичко</th>
+                    <th>Остатък</th>
+                </tr>
+                {% for month in data %}
+                    <tr class="text-center">
+                        <td>
+                            <span class="bold-text">
+                                {{ month.year}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bold-text">
+                                {{ month.month }}
+                            </span>
+                        </td>
+                        <td>{{ month.vacation_used }}</td>
+                        <td>{{ month.vacation_calc }}</td>
+                        <td>{{ month.vacation_paid }}</td>
+                        <td>{{ month.vacation_total }}</td>
+                        <td>
+                            <span class="bold-text">
+                                {{ month.vacation_all }}
+                            </span>
+                        </td>
+                        <td>{{ month.vacation_to_add }}</td>
+                        <td>
+                            <span class="bold-text">
+                                {{ month.given_vacation|floatformat:1 }}
+                             </span>
+                        </td>
+                        <td>
+                            <span class="bold-text">
+                                {{ month.vacation_left|floatformat:1 }}
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

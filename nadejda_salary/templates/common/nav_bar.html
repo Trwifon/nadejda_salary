@@ -18,12 +18,18 @@
                 <span>Нов месец</span>
             </a>
         </li>
+                <li>
+            <a class="link-nav" href="{% url 'list_vacation' %}">
+                <span>Отпуски</span>
+            </a>
+        </li>
     </ul>
     <ul class="navbar-center">
         <li>
             {% if current_month %}
                 <a class="link-nav" href="{% url 'data' 0 %}">
-                    <span>Попълване на данни за месец: {{ current_month.month }}</span>
+                    <span>Месец: {{ current_month.get_month_display }}</span>
+                    <span>{{ current_month.year }} г.</span>
                 </a>
             {% else %}
                 <span>Няма активен месец</span>
@@ -31,17 +37,24 @@
         </li>
     </ul>
     <ul class="navbar-right">
+        <li>
+            <a class="link-nav" href="{% url 'update_worker' 0 %}">
+                <span>Служители</span>
+            </a>
+        </li>
         {% if user.is_staff %}
             <li>
-                <a class="link-nav" href="{% url 'update_worker' 0 %}">
-                    <span>Служители</span>
-                </a>
-            </li>
-            <li>
-                <a class="link-nav" href="{% url 'data' 1 %}">
+                <a class="link-nav" href="{% url 'list_data' %}">
                     <span>Текущ месец</span>
                 </a>
             </li>
+            {% if current_month %}
+                <li>
+                    <a class="link-nav" href="{% url 'close_month' current_month.pk %}">
+                        <span>Затвори месеца</span>
+                    </a>
+                </li>
+            {% endif %}
         {% endif %}
         {% if user.is_authenticated %}
             <li>
