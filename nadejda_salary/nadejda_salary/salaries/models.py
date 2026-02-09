@@ -18,6 +18,16 @@ class Workers(models.Model):
         null=True,
     )
 
+    bonus_one = models.IntegerField(
+        null=True,
+        default=0,
+    )
+
+    bonus_two = models.IntegerField(
+        null=True,
+        default=0,
+    )
+
     total_vacation = models.PositiveSmallIntegerField(
         null=True,
     )

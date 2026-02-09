@@ -76,10 +76,14 @@ class WorkerUpdateForm(forms.ModelForm):
         model = Workers
         fields = [
             'salary',
+            'bonus_one',
+            'bonus_two',
         ]
 
         labels = {
             'salary': 'Заплата',
+            'bonus_one': 'Бонус едно',
+            'bonus_two': 'Бонус две',
         }
 
 
@@ -88,10 +92,12 @@ class WorkerUpdateHRForm(forms.ModelForm):
         model = Workers
         fields = [
             'end_date',
+            'contract',
         ]
 
         labels = {
             'end_date': 'Напуснал:',
+            'contract': 'Договор:',
         }
 
         widgets = {

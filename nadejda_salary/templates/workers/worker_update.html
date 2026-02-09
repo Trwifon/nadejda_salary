@@ -11,6 +11,8 @@
                     <th>Цех</th>
                     {% if user.is_staff %}
                         <th>Заплата</th>
+                        <th>Бонус едно</th>
+                        <th>Бонус две</th>
                     {% endif %}
                     <th>Постъпил на работа</th>
                 </tr>
@@ -24,6 +26,8 @@
                         <td>{{worker.get_workshop_display}}</td>
                         {% if user.is_staff %}
                             <td>{{worker.salary}}</td>
+                            <td>{{worker.bonus_one}}</td>
+                            <td>{{worker.bonus_two}}</td>
                         {% endif %}
                         <td>{{worker.start_date}}</td>
                     </tr>

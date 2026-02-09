@@ -78,6 +78,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     voucher=0,
                     worker=next_worker,
                     month=current_month,
+                    vacation_calc = 0,
                 )
                 new_data.save()
 
@@ -137,7 +138,7 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         index = kwargs.get('index')
         context['index'] = index
 
-        worker_list = Workers.objects.all().order_by('name')
+        worker_list = Workers.objects.filter(end_date=None).order_by('workshop', 'name')
         context['worker_list'] = worker_list
 
         current_worker = worker_list[index]
@@ -156,7 +157,7 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         user = self.request.user
         index = kwargs.get('index')
 
-        worker_list = Workers.objects.all().order_by('name')
+        worker_list = Workers.objects.filter(end_date=None).order_by('workshop', 'name')
         worker_pk = worker_list[index].id
 
         length = len(worker_list) -1
