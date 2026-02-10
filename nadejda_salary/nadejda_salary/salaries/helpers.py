@@ -1,15 +1,19 @@
 import math
 
 
+PAY_PER_SICK = 20.67
+PAY_PER_VACATION = 29.50
+
 def worker_month_calc(worker, current_month):
-    worker.gross = worker.salary + worker.insurance
+    worker.total_salary = worker.worker.salary + worker.worker.bonus_one + worker.worker.bonus_two
+    worker.gross = worker.total_salary + worker.insurance
 
     worker.equivalent_hours = math.ceil(worker.work_hours / 8) * 8
     worker.unpaid_hours = worker.equivalent_hours - worker.work_hours
     worker.equivalent_days = worker.equivalent_hours / 8
-    worker.salary_earned = (worker.work_hours / (current_month.work_days * 8)) * worker.worker.salary
+    worker.salary_earned = (worker.work_hours / (current_month.work_days * 8)) * worker.total_salary
 
-    worker.sick_days_sum = worker.sick_days_firm * 35
+    worker.sick_days_sum = worker.sick_days_firm * PAY_PER_SICK
 
     worker.vacation_calc = current_month.work_days \
                            - worker.sick_days_firm \
@@ -18,7 +22,7 @@ def worker_month_calc(worker, current_month):
                            - worker.equivalent_days
     worker.vacation_calc = 0 if worker.vacation_calc < 0 else worker.vacation_calc
     worker.vacation_sum = worker.vacation_used + worker.vacation_calc
-    worker.pay_for_vacation = worker.vacation_sum * 50
+    worker.pay_for_vacation = worker.vacation_sum * PAY_PER_VACATION
 
     worker.total = worker.salary_earned + worker.sick_days_sum + worker.pay_for_vacation
 

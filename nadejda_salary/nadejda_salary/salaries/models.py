@@ -87,12 +87,23 @@ class WorkerMonth(models.Model):
         default=0,
     )
 
+    bonus_one = models.PositiveSmallIntegerField(
+        default=0,
+    )
+
+    bonus_two = models.PositiveSmallIntegerField(
+        default=0,
+    )
+
+    total_salary = models.PositiveSmallIntegerField(
+        default=0,
+    )
+
     insurance = models.DecimalField(
         max_digits=6,
         decimal_places=2,
         validators=[MinValueValidator(0)],
     )
-
 
     work_hours = models.PositiveSmallIntegerField()
 
