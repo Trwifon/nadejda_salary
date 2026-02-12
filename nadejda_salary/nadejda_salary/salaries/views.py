@@ -3,8 +3,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView, UpdateView
-from .helpers import worker_month_calc
+from django.views.generic import CreateView, TemplateView, UpdateView, ListView
 from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
     DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
@@ -40,7 +39,7 @@ class MonthCreateView(PermissionRequiredMixin, CreateView):
 
 class DataFillView(PermissionRequiredMixin, TemplateView):
     model = WorkerMonth
-    template_name = 'workers/data.html'
+    template_name = 'worker_month/data.html'
     permission_required = 'salaries.add_workermonth'
 
     def get_context_data(self, *args, **kwargs):
@@ -81,11 +80,6 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     vacation_calc = 0,
                 )
                 new_data.save()
-
-                # if current_month in (11, 12):
-                #     new_data.vacation_to_add = 1.5
-                # else:
-                #     new_data.vacation_to_add = 1.7
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
@@ -181,42 +175,53 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         return redirect('update_worker', index)
 
 
-class DataListView(PermissionRequiredMixin, TemplateView):
+class DataListView(PermissionRequiredMixin, ListView):
     model = WorkerMonth
-    template_name = 'workers/data_list.html'
-    permission_required = ('salaries.change_workermonth',)
+    template_name = 'worker_month/data_list.html'
+    permission_required = 'salaries.change_workermonth'
+    context_object_name = 'workers'
 
-    def get_context_data(self, **kwargs):
-        context = {}
-
+    def get_queryset(self):
         current_month = CurrentMonth.objects.get(open=True)
-        context['current_month'] = current_month
 
         worker_month_list = WorkerMonth.objects.\
             filter(month=current_month).\
             order_by('worker__workshop', 'worker__name')
 
-        workers = {}
+        return worker_month_list
 
-        for worker in worker_month_list:
-            worker.index = list(worker_month_list).index(worker)
-
-            worker.salary = worker.worker.salary
-
-            worker = worker_month_calc(worker, current_month)
-            workers[worker] = worker
-
-            worker.save()
-
-        context['workers'] = workers
-
-        return context
+# class DataListView(PermissionRequiredMixin, TemplateView):
+#     model = WorkerMonth
+#     template_name = 'worker_month/data_list.html'
+#     permission_required = ('salaries.change_workermonth',)
+#
+#     def get_context_data(self, **kwargs):
+#         context = {}
+#
+#         current_month = CurrentMonth.objects.get(open=True)
+#
+#         worker_month_list = WorkerMonth.objects.\
+#             filter(month=current_month).\
+#             order_by('worker__workshop', 'worker__name')
+#
+#         workers = {}
+#
+#         for worker in worker_month_list:
+#             worker.index = list(worker_month_list).index(worker)
+#
+#             workers[worker] = worker
+#
+#             worker.save()
+#
+#         context['workers'] = workers
+#
+#         return context
 
 
 class DataUpdateView(PermissionRequiredMixin, UpdateView):
     model = WorkerMonth
     form_class = DataUpdateForm
-    template_name = 'workers/data_update.html'
+    template_name = 'worker_month/data_update.html'
     permission_required = 'salaries.change_workers'
     success_url = reverse_lazy('list_data')
 
@@ -266,6 +271,14 @@ class CloseMonthView(TemplateView):
                 return redirect('dashboard')
 
         return redirect('dashboard')
+
+
+class DetailsWorkerMonthView(PermissionRequiredMixin, TemplateView):
+    template_name = 'worker_month/details_worker_month.html'
+    permission_required = 'salaries.change_workers'
+
+    def get_context_data(self, **kwargs):
+        context = {}
 
 
 

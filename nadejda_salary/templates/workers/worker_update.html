@@ -13,6 +13,7 @@
                         <th>Заплата</th>
                         <th>Бонус едно</th>
                         <th>Бонус две</th>
+                        <th>Общо</th>
                     {% endif %}
                     <th>Постъпил на работа</th>
                 </tr>
@@ -28,6 +29,7 @@
                             <td>{{worker.salary}}</td>
                             <td>{{worker.bonus_one}}</td>
                             <td>{{worker.bonus_two}}</td>
+                            <td>{{worker.total_salary}}</td>
                         {% endif %}
                         <td>{{worker.start_date}}</td>
                     </tr>

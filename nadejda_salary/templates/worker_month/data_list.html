@@ -1,4 +1,4 @@
-{% extends 'common/create.html' %}
+{% extends 'common/index.html' %}
 {% load static %}
 
 {% block content %}
@@ -39,16 +39,16 @@
                 </tr>
                 {% for worker in workers %}
                     <tr class="text-center">
-                        <td>{{ worker.worker.name}}</td>
+                        <td>
+                            <a href="{% url 'details_worker_month' worker.worker.pk %}">
+                                {{ worker.worker.name}}
+                            </a>
+                        </td>
                         <td>{{ worker.worker.get_workshop_display }}</td>
                         <td>{{ worker.worker.salary }}</td>
                         <td>{{ worker.worker.bonus_one }}</td>
                         <td>{{ worker.worker.bonus_two }}</td>
-                        <td>
-                            <a href="{% url 'update_worker' worker.index %}">
-                                {{ worker.total_salary }}
-                            </a>
-                        </td>
+                        <td>{{ worker.total_salary }}</td>
                         <td>{{ worker.work_hours }}</td>
                         <td>{{ worker.unpaid_hours }}</td>
                         <td>{{ worker.equivalent_hours }}</td>
