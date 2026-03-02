@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
+from django.contrib.auth import password_validation
 
 from nadejda_salary.mixins import ReadonlyViewMixin
 
@@ -44,7 +46,56 @@ class ProfileCreateForm(UserCreationForm):
 
 
 class ProfileUpdateForm(ProfileBaseForm):
-    pass
+    current_password = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Current password'}),
+        help_text='Enter your current password to change it')
+
+    new_password1 = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'New password'}),
+        help_text='Enter new password')
+
+    new_password2 = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat new password'}),
+        help_text='Repeat new password')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new1 = cleaned_data.get('new_password1')
+        new2 = cleaned_data.get('new_password2')
+        current = cleaned_data.get('current_password')
+
+        # If any new-password field is filled, require current password
+        if new1 or new2:
+            if not current:
+                raise ValidationError('Current password is required to change password.')
+
+            # verify current password is correct
+            if not self.instance.check_password(current):
+                raise ValidationError('Current password is incorrect.')
+
+            # ensure new passwords match
+            if new1 != new2:
+                raise ValidationError('The two new password fields didn\'t match.')
+
+            # validate new password with Django validators
+            try:
+                password_validation.validate_password(new1, self.instance)
+            except ValidationError as e:
+                raise ValidationError(e)
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        new1 = self.cleaned_data.get('new_password1')
+        if new1:
+            user.set_password(new1)
+        if commit:
+            user.save()
+        return user
 
 
 class DeleteUserForm(ReadonlyViewMixin, ProfileBaseForm):

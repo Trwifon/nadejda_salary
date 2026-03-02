@@ -48,13 +48,6 @@
                     <span>Текущ месец</span>
                 </a>
             </li>
-            {% if current_month %}
-                <li>
-                    <a class="link-nav" href="{% url 'close_month' current_month.pk %}">
-                        <span>Затвори месеца</span>
-                    </a>
-                </li>
-            {% endif %}
         {% endif %}
         {% if user.is_authenticated %}
             <li>

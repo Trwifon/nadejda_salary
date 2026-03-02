@@ -7,6 +7,12 @@
             <h4>Edit profile</h4>
             <hr>
             {% csrf_token %}
+            <p>To change your password, fill the password fields below. Leave them blank to keep the current password.</p>
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
             {% for field in form %}
                 <div class="form-space">
                     {{ field.label_tag }}

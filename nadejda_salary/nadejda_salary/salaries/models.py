@@ -114,11 +114,7 @@ class WorkerMonth(models.Model):
 
     sick_days_firm = models.PositiveSmallIntegerField()
 
-    vacation_to_add = models.PositiveSmallIntegerField()
-
     vacation_used = models.PositiveSmallIntegerField()
-
-    vacation_calc = models.PositiveSmallIntegerField()
 
     vacation_paid = models.PositiveSmallIntegerField()
 
@@ -227,13 +223,14 @@ class WorkerMonth(models.Model):
         return result
 
     @property
-    def  total_paid(self):
+    def total_paid(self):
         result = self.rest \
             + float(self.unpaid_hours_euro) \
             + float(self.paid_by_bank) \
             + float(self.paid_by_cash) \
             + float(self.mobile) \
             + float(self.voucher)
+        return result
 
 
 class Vacation(models.Model):
@@ -271,7 +268,7 @@ class Vacation(models.Model):
     )
 
     def __str__(self):
-        return self.year
+        return str(self.year)
 
 
 

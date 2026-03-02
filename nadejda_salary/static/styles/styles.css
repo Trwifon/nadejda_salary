@@ -202,7 +202,8 @@ table tr {
 }
 
 .table-list {
-    width: 100%
+    width: 100%;
+    margin-top: 1em;
 }
 
 .bold-text {

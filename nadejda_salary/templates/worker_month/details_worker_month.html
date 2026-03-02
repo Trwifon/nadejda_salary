@@ -3,21 +3,19 @@
 
 {% block content %}
     <div>
-        <h5>
-            <span>Месец: {{ current_month.get_month_display }}</span>
-            <span>{{ current_month.year }} г.</span>
-            <span>- {{ current_month.work_days}} раб. дни</span>
-        </h5>
+        <p>Име: {{ object.worker.name }}</p>
+        <p>Основна заплата: {{ object.total_salary }}</p>
+        <p>Брутна заплата: {{ object.total }}</p>
     </div>
-    <div class="record-container">
-        <div>
-            <h5>
-                <span>Месец: {{ current_month.get_month_display }}</span>
-                <span>{{ current_month.year }} г.</span>
-                <span>- {{ current_month.work_days}} раб. дни</span>
-            </h5>
-        </div>
-    </div>
+<!--    <div class="record-container">-->
+<!--        <div>-->
+<!--            <h5>-->
+<!--                <span>Месец: {{ current_month.get_month_display }}</span>-->
+<!--                <span>{{ current_month.year }} г.</span>-->
+<!--                <span>- {{ current_month.work_days}} раб. дни</span>-->
+<!--            </h5>-->
+<!--        </div>-->
+<!--    </div>-->
 {% endblock %}
 
 

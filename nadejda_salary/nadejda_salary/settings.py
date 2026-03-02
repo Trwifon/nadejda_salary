@@ -21,13 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=9kcm4lb0)%)uk!y519iebj7cgf4b00y(=duj4c6bkufj6o1vn'
+# Load secret and debug from environment. Keep a safe default for local dev.
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-dev')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Use env var for DEBUG (cast to bool). Default True for local development.
+DEBUG = config('DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS can be a comma-separated list in env (e.g. "example.com,api.example.com").
+_allowed = config('ALLOWED_HOSTS', default='')
+ALLOWED_HOSTS = [h for h in _allowed.split(',') if h]
 
 
 # Application definition
@@ -133,6 +135,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static/scripts/',
 ]
 
+# Directory used by `collectstatic` in production
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -142,3 +147,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
 LOGOUT_REDIRECT_URL = reverse_lazy('dashboard')
+
+
+# Production security settings — enabled when DEBUG is False.
+if not DEBUG:
+    # Redirect HTTP -> HTTPS
+    SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', cast=bool, default=True)
+
+    # Cookies over HTTPS only
+    SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool, default=True)
+    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool, default=True)
+
+    # HSTS
+    SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', cast=int, default=31536000)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = config('SECURE_HSTS_INCLUDE_SUBDOMAINS', cast=bool, default=True)
+    SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', cast=bool, default=True)
+
+    # Referrer policy
+    SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'

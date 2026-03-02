@@ -9,6 +9,9 @@
                 <span>{{ current_month.year }} г.</span>
                 <span>- {{ current_month.work_days}} раб. дни</span>
             </h5>
+            <a class="buttons" href="{% url 'close_month' current_month.pk %}">
+                <span>Приключване на текущия месец</span>
+            </a>
             <table class="table-list">
                 <tr class="text-center">
                     <th>Име</th>
@@ -40,14 +43,14 @@
                 {% for worker in workers %}
                     <tr class="text-center">
                         <td>
-                            <a href="{% url 'details_worker_month' worker.worker.pk %}">
+                            <a href="{% url 'details_worker_month' worker.pk %}">
                                 {{ worker.worker.name}}
                             </a>
                         </td>
                         <td>{{ worker.worker.get_workshop_display }}</td>
-                        <td>{{ worker.worker.salary }}</td>
-                        <td>{{ worker.worker.bonus_one }}</td>
-                        <td>{{ worker.worker.bonus_two }}</td>
+                        <td>{{ worker.salary }}</td>
+                        <td>{{ worker.bonus_one }}</td>
+                        <td>{{ worker.bonus_two }}</td>
                         <td>{{ worker.total_salary }}</td>
                         <td>{{ worker.work_hours }}</td>
                         <td>{{ worker.unpaid_hours }}</td>

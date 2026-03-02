@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView, UpdateView, ListView
+from django.views.generic import CreateView, TemplateView, UpdateView, ListView, DetailView
 from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
     DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
@@ -182,40 +182,29 @@ class DataListView(PermissionRequiredMixin, ListView):
     context_object_name = 'workers'
 
     def get_queryset(self):
-        current_month = CurrentMonth.objects.get(open=True)
+        self.current_month = CurrentMonth.objects.get(open=True)
 
-        worker_month_list = WorkerMonth.objects.\
-            filter(month=current_month).\
-            order_by('worker__workshop', 'worker__name')
+        worker_month_list = (
+            WorkerMonth.objects
+            .select_related('worker', 'month')
+            .filter(month=self.current_month)
+            .order_by('worker__workshop', 'worker__name')
+        )
+
+        for worker in worker_month_list:
+            worker.salary = worker.worker.salary
+            worker.bonus_one = worker.worker.bonus_one
+            worker.bonus_two = worker.worker.bonus_two
+            worker.save()
 
         return worker_month_list
 
-# class DataListView(PermissionRequiredMixin, TemplateView):
-#     model = WorkerMonth
-#     template_name = 'worker_month/data_list.html'
-#     permission_required = ('salaries.change_workermonth',)
-#
-#     def get_context_data(self, **kwargs):
-#         context = {}
-#
-#         current_month = CurrentMonth.objects.get(open=True)
-#
-#         worker_month_list = WorkerMonth.objects.\
-#             filter(month=current_month).\
-#             order_by('worker__workshop', 'worker__name')
-#
-#         workers = {}
-#
-#         for worker in worker_month_list:
-#             worker.index = list(worker_month_list).index(worker)
-#
-#             workers[worker] = worker
-#
-#             worker.save()
-#
-#         context['workers'] = workers
-#
-#         return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_month'] = self.current_month
+        return context
+
+
 
 
 class DataUpdateView(PermissionRequiredMixin, UpdateView):
@@ -273,12 +262,12 @@ class CloseMonthView(TemplateView):
         return redirect('dashboard')
 
 
-class DetailsWorkerMonthView(PermissionRequiredMixin, TemplateView):
+class DetailsWorkerMonthView(PermissionRequiredMixin, DetailView):
+    model = WorkerMonth
     template_name = 'worker_month/details_worker_month.html'
     permission_required = 'salaries.change_workers'
 
-    def get_context_data(self, **kwargs):
-        context = {}
+
 
 
 
