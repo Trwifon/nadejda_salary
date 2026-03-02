@@ -1,0 +1,14 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="message">
+        <div class="message-box">
+            <h4>Имате неприключен месец.</h4>
+            <hr>
+            <div>
+                <a href="{% url 'dashboard' %}" class="buttons">OK</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

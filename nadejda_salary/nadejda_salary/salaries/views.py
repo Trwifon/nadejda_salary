@@ -30,7 +30,7 @@ class MonthCreateView(PermissionRequiredMixin, CreateView):
 
         open_month = CurrentMonth.objects.filter(open=True)
         if open_month:
-            return HttpResponse('Имате неприключен месец.')
+            return render(request, 'months/month_unclosed.html')
 
         return render(request, 'months/month_create.html', {
             'form': form,
