@@ -232,6 +232,109 @@ table tr {
     font-weight: bold;
 }
 
+/* Details page sections */
+.section-title {
+    margin: 1rem 0 0.4rem 0;
+    font-size: 1.2rem;
+    color: #2b6f8f;
+    text-align: center;
+    width: 100%;
+}
+
+.details-table {
+    width: 100%;
+    margin-bottom: 1.6rem;
+}
+
+/* Make value column fixed-width (approx. 10 characters) and handle overflow */
+.details-table {
+    table-layout: fixed;
+}
+
+.details-table td:nth-child(2) {
+    width: 10ch;
+    max-width: 10ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    padding-left: 0.2rem;
+}
+
+.details-table td {
+    padding: 0.2rem 0.35rem;
+    border: none;
+}
+
+.details-table td:first-child {
+    padding-right: 0.5rem;
+}
+
+.details-table tr:nth-child(odd) td {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+/* Header for details page */
+.details-header {
+    background: #f8f7db;
+    border: 1px solid #d6eef6;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+.details-header h2 {
+    margin: 0;
+}
+
+.header-meta {
+    margin-top: 0.35rem;
+    color: #666;
+    display: block;
+    text-align: center;
+}
+
+.muted {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Center the header block */
+.details-header {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 1100px;
+}
+
+.two-columns {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.two-columns > div {
+    flex: 1 1 280px;
+}
+
+/* Three column layout for details page */
+.three-columns {
+    display: flex;
+    gap: 10rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    padding: 0 8rem;
+}
+
+.three-columns .col {
+    flex: 1 1 240px;
+}
+
+.three-columns .summary-col {
+    flex: 0 0 360px;
+}
+
 
 
 

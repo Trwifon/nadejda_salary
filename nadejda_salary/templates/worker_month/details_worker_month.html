@@ -2,21 +2,75 @@
 {% load static %}
 
 {% block content %}
-    <div>
-        <p>Име: {{ object.worker.name }}</p>
-        <p>Основна заплата: {{ object.total_salary }}</p>
-        <p>Брутна заплата: {{ object.total }}</p>
+    <div class="details-header">
+        <div>
+            <h2>{{ object.worker.name }}</h2>
+            <div class="header-meta">
+                <span class="muted">Цех: {{ object.worker.get_workshop_display }}</span>
+                <span class="muted">&nbsp;|&nbsp; Месец: {{ object.month.month }} {{ object.month.year }}</span>
+            </div>
+        </div>
     </div>
-<!--    <div class="record-container">-->
-<!--        <div>-->
-<!--            <h5>-->
-<!--                <span>Месец: {{ current_month.get_month_display }}</span>-->
-<!--                <span>{{ current_month.year }} г.</span>-->
-<!--                <span>- {{ current_month.work_days}} раб. дни</span>-->
-<!--            </h5>-->
-<!--        </div>-->
-<!--    </div>-->
+
+    <div class="three-columns">
+        <div class="col">
+            <h5 class="section-title">Компоненти на заплатата</h5>
+            <table class="table-list details-table">
+                <tr><td>Заплата - €</td><td>{{ object.salary }}</td></tr>
+                <tr><td>Бонус 1 - €</td><td>{{ object.bonus_one }}</td></tr>
+                <tr><td>Бонус 2 - €</td><td>{{ object.bonus_two }}</td></tr>
+                <tr><td>Общо заплата - €</td><td>{{ object.total_salary }}</td></tr>
+                <tr><td>Осигуровки - €</td><td>{{ object.insurance|floatformat:2 }}</td></tr>
+            </table>
+
+            <h5 class="section-title">Часове и еквиваленти</h5>
+            <table class="table-list details-table">
+                <tr><td>Отработени часове</td><td>{{ object.work_hours }}</td></tr>
+                <tr><td>Еквивалентни часове</td><td>{{ object.equivalent_hours }}</td></tr>
+                <tr><td>Неплатени часове</td><td>{{ object.unpaid_hours }}</td></tr>
+                <tr><td>Еквивалентни дни</td><td>{{ object.equivalent_days|floatformat:0 }}</td></tr>
+                <tr><td>Изработена заплата - €</td><td>{{ object.salary_earned|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+
+        <div class="col">
+            <h5 class="section-title">Болнични</h5>
+            <table class="table-list details-table">
+                <tr><td>Болнични дни - НОИ</td><td>{{ object.sick_days_noi }}</td></tr>
+                <tr><td>Болнични дни - Фирма</td><td>{{ object.sick_days_firm }}</td></tr>
+                <tr><td>Платени за болнични - €</td><td>{{ object.sick_days_sum|floatformat:2 }}</td></tr>
+            </table>
+
+            <h5 class="section-title">Отпуски</h5>
+            <table class="table-list details-table">
+                <tr><td>Използвана отпуска - дни</td><td>{{ object.vacation_used }}</td></tr>
+                <tr><td>Начислена отпуска - дни</td><td>{{ object.vacation_calc|floatformat:0 }}</td></tr>
+                <tr><td>Отпуска общо - дни</td><td>{{ object.vacation_sum|floatformat:0 }}</td></tr>
+                <tr><td>Платена отпуска - дни</td><td>{{ object.vacation_paid }}</td></tr>
+                <tr><td>Платено за отпуска - €</td><td>{{ object.pay_for_vacation|floatformat:2 }}</td></tr>
+            </table>
+        </div>
+
+        <div class="col summary-col">
+            <h5 class="section-title">Резюме</h5>
+            <table class="table-list details-table">
+                <tr><td>Брутно възнаграждение - €</td><td>{{ object.total|floatformat:2 }}</td></tr>
+                <tr><td>Платено по банка - €</td><td>{{ object.paid_by_bank|floatformat:2 }}</td></tr>
+                <tr><td>Платено в брой - €</td><td>{{ object.paid_by_cash|floatformat:2 }}</td></tr>
+                <tr><td>Мобилни телефони - €</td><td>{{ object.mobile|floatformat:2 }}</td></tr>
+                <tr><td>Ваучер - €</td><td>{{ object.voucher|floatformat:2 }}</td></tr>
+                <tr><td>Неплатени часове - €</td><td>{{ object.unpaid_hours_euro|floatformat:2 }}</td></tr>
+                <tr><td>Остатък - €</td><td>{{ object.rest|floatformat:2 }}</td></tr>
+                <tr><td>Общо платено - €</td><td>{{ object.total_paid|floatformat:2 }}</td></tr>
+            </table>
+
+            <div style="margin-top:1rem;">
+                <a href="{% url 'list_data' %}" class="buttons">Назад</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
 
 
 

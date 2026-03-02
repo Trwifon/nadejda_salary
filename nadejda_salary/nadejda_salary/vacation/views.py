@@ -26,8 +26,10 @@ class VacationDisplayView(TemplateView):
         vacation_all = 0
 
         current_vacations_data = []
-
         current_vacation = WorkerMonth.objects.filter(worker=pk).filter(month__open=False)
+
+        context = {'data': current_vacations_data, 'current_worker': current_worker}
+
         for el in current_vacation:
             current_month = {'year': el.month.year,
                              'month': el.month.month,
@@ -36,12 +38,12 @@ class VacationDisplayView(TemplateView):
                              'vacation_paid': el.vacation_paid
                              }
 
-            vacation_total = el.vacation_used + el.vacation_calc+el.vacation_paid
+            vacation_total = el.vacation_used + el.vacation_calc + el.vacation_paid
             current_month['vacation_total'] = vacation_total
             vacation_all += vacation_total
             current_month['vacation_all'] = vacation_all
 
-            if current_month in (11, 12):
+            if current_month['month'] in (11, 12):
                 vacation_to_add = 1.5
             else:
                 vacation_to_add = 1.7
@@ -55,8 +57,6 @@ class VacationDisplayView(TemplateView):
             current_month['vacation_left'] = vacation_left
 
             current_vacations_data.append(current_month)
-
-            context = {'data': current_vacations_data, 'current_worker': current_worker}
 
         return context
 
