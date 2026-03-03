@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, ListView, DetailView
@@ -16,6 +15,10 @@ class WorkerCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'workers/worker_create.html'
     success_url = reverse_lazy('dashboard')
     permission_required = ('salaries.add_workers',)
+
+    def form_valid(self, form):
+        form.instance.total_vacation = form.instance.initial_vacation
+        return super().form_valid(form)
 
 
 class MonthCreateView(PermissionRequiredMixin, CreateView):
@@ -68,7 +71,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     work_hours=0,
                     sick_days_noi=0,
                     sick_days_firm=0,
-                    vacation_to_add=0,
+                    # vacation_to_add=0,
                     vacation_used=0,
                     vacation_paid=0,
                     paid_by_bank=0,
@@ -77,7 +80,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     voucher=0,
                     worker=next_worker,
                     month=current_month,
-                    vacation_calc = 0,
+                    # vacation_calc = 0,
                 )
                 new_data.save()
 
@@ -166,6 +169,10 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
 
+        # If the user clicked OK, save already happened above; always redirect to dashboard
+        if 'OK' in request.POST:
+            return redirect('dashboard')
+
         if 'Next' in request.POST:
             index = index + 1 if index < length else index
 
@@ -203,8 +210,6 @@ class DataListView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['current_month'] = self.current_month
         return context
-
-
 
 
 class DataUpdateView(PermissionRequiredMixin, UpdateView):
@@ -266,6 +271,20 @@ class DetailsWorkerMonthView(PermissionRequiredMixin, DetailView):
     model = WorkerMonth
     template_name = 'worker_month/details_worker_month.html'
     permission_required = 'salaries.change_workers'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # compute index for the worker in the active list so we can link to update_worker
+        worker = self.object.worker
+        worker_list = Workers.objects.filter(end_date=None).order_by('workshop', 'name')
+        try:
+            index = list(worker_list).index(worker)
+        except ValueError:
+            index = 0
+
+        context['update_index'] = index
+        return context
 
 
 

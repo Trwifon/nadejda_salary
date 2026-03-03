@@ -9,11 +9,16 @@ body {
     color: #fff;
     padding: 0.3em 1em;
     margin: 0.5em 0em;
+    text-decoration: none;
+    display: inline-block;
 
-    &:hover {
-        background-color: dodgerblue;
-        color: #000;
-    }
+}
+
+.buttons:hover {
+    background-color: dodgerblue;
+    color: #000;
+    text-decoration: none;
+}
 }
 
 .buttons--danger {
@@ -333,6 +338,16 @@ table tr {
 
 .three-columns .summary-col {
     flex: 0 0 360px;
+}
+
+/* Centered action buttons on details page */
+.details-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.details-actions .buttons {
+    margin: 0 0.5rem;
 }
 
 
