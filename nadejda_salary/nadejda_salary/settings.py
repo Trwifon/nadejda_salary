@@ -131,9 +131,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static/styles/',
-    BASE_DIR / 'static/images/',
-    BASE_DIR / 'static/scripts/',
+    BASE_DIR / 'static',
 ]
 
 # Directory used by `collectstatic` in production

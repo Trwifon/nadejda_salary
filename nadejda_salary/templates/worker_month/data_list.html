@@ -12,6 +12,9 @@
             <a class="buttons" href="{% url 'close_month' current_month.pk %}">
                 <span>Приключване на текущия месец</span>
             </a>
+            <button class="buttons" onclick="printTable()">
+                <span>Печат на таблицата</span>
+            </button>
             <table class="table-list">
                 <tr class="text-center">
                     <th>Име</th>
@@ -76,6 +79,8 @@
             </table>
         </div>
     </div>
+
+    <script src="{% static 'scripts/print_table.js' %}"></script>
 {% endblock %}
 
 
