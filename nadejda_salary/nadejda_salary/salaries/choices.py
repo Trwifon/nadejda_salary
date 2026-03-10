@@ -3,11 +3,11 @@ from django.db import models
 
 class WorkshopChoices(models.TextChoices):
     ANTON = 'AN', 'Антон'
-    ALUMIN = 'A', 'Алуминий'
-    GLASSES = 'G', 'Стъклопакети'
+    ALUMIN = 'A', 'Алум.'
+    GLASSES = 'G', 'Стъклоп.'
     PVC = 'P', 'PVC'
-    INSTALLER = 'I', 'Монтажник'
-    LABOURER = 'L', 'Общ работник'
+    INSTALLER = 'I', 'Монт.'
+    LABOURER = 'L', 'Общ раб.'
 
 
 class YearChoices(models.IntegerChoices):

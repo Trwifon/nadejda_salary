@@ -11,6 +11,9 @@
                     <th>Цех</th>
                     {% if user.is_staff %}
                         <th>Заплата</th>
+                        <th>Бонус едно</th>
+                        <th>Бонус две</th>
+                        <th>Общо</th>
                     {% endif %}
                     <th>Постъпил на работа</th>
                 </tr>
@@ -24,6 +27,9 @@
                         <td>{{worker.get_workshop_display}}</td>
                         {% if user.is_staff %}
                             <td>{{worker.salary}}</td>
+                            <td>{{worker.bonus_one}}</td>
+                            <td>{{worker.bonus_two}}</td>
+                            <td>{{worker.total_salary}}</td>
                         {% endif %}
                         <td>{{worker.start_date}}</td>
                     </tr>
@@ -45,6 +51,7 @@
                 {% endfor %}
                 <button name="Previous" class = "buttons" type="submit">Предишен</button>
                 <button name="Next" class = "buttons" type="submit">Следващ</button>
+                <button name="OK" class = "buttons" type="submit">OK</button>
             </form>
         </div>
     </div>

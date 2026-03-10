@@ -1,6 +1,7 @@
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -35,6 +36,14 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
     def test_func(self):
         user = get_object_or_404(User, pk=self.kwargs['pk'])
         return self.request.user == user
+
+    def form_valid(self, form):
+        # save user (ProfileUpdateForm handles password set if provided)
+        user = form.save()
+        # if password was changed, keep the user logged in
+        if form.cleaned_data.get('new_password1'):
+            update_session_auth_hash(self.request, user)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class UserDeleteView(UserPassesTestMixin, DeleteView, FormView):

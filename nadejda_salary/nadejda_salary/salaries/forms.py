@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.forms import ModelForm
 from django import forms
 from .models import Workers, CurrentMonth, WorkerMonth
@@ -54,6 +53,9 @@ class DataFillForm(ModelForm):
             'month',
             'vacation_to_add',
             'salary',
+            'bonus_one',
+            'bonus_two',
+            'total_salary',
             'vacation_calc',
         ]
 
@@ -76,10 +78,14 @@ class WorkerUpdateForm(forms.ModelForm):
         model = Workers
         fields = [
             'salary',
+            'bonus_one',
+            'bonus_two',
         ]
 
         labels = {
             'salary': 'Заплата',
+            'bonus_one': 'Бонус едно',
+            'bonus_two': 'Бонус две',
         }
 
 
@@ -88,10 +94,12 @@ class WorkerUpdateHRForm(forms.ModelForm):
         model = Workers
         fields = [
             'end_date',
+            'contract',
         ]
 
         labels = {
             'end_date': 'Напуснал:',
+            'contract': 'Договор:',
         }
 
         widgets = {
