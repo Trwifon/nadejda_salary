@@ -5,8 +5,6 @@ from django.db.models import Sum, Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
-# from nadejda_94_django.common.forms import PartnerForm, SearchForm
-# from nadejda_94_django.records.choices import users_dict
 from nadejda_salary.salaries.models import CurrentMonth, Workers
 # class Dashboard(LoginRequiredMixin, TemplateView, FormView):
 
@@ -27,7 +25,8 @@ class Dashboard(TemplateView, FormView):
             context['current_month'] = False
 
         first_worker = Workers.objects.all().first()
-        context['first_worker'] = first_worker.pk
+        if first_worker:
+            context['first_worker'] = first_worker.pk
 
         return context
 

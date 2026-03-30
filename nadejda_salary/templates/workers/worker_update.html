@@ -10,9 +10,9 @@
                     <th>Име</th>
                     <th>Цех</th>
                     {% if user.is_staff %}
-                        <th>Заплата</th>
-                        <th>Бонус едно</th>
-                        <th>Бонус две</th>
+                        <th>Бонус шеф</th>
+                        <th>Бонус постоянен</th>
+                        <th>Бонус променлив</th>
                         <th>Общо</th>
                     {% endif %}
                     <th>Постъпил на работа</th>
@@ -26,9 +26,9 @@
                         </td>
                         <td>{{worker.get_workshop_display}}</td>
                         {% if user.is_staff %}
-                            <td>{{worker.salary}}</td>
-                            <td>{{worker.bonus_one}}</td>
-                            <td>{{worker.bonus_two}}</td>
+                            <td>{{worker.bonus_boss}}</td>
+                            <td>{{worker.bonus_constant}}</td>
+                            <td>{{worker.bonus_variable}}</td>
                             <td>{{worker.total_salary}}</td>
                         {% endif %}
                         <td>{{worker.start_date}}</td>

@@ -19,9 +19,9 @@
                 <tr class="text-center">
                     <th>Име</th>
                     <th>Цех</th>
-                    <th>Запл.</th>
-                    <th>Бонус 1</th>
-                    <th>Бонус 2</th>
+                    <th>Бонус шеф</th>
+                    <th>Бонус пост.</th>
+                    <th>Бонус пром.</th>
                     <th>Всичко</th>
                     <th>Израб. час.</th>
                     <th>Непл. час.</th>
@@ -51,9 +51,9 @@
                             </a>
                         </td>
                         <td>{{ worker.worker.get_workshop_display }}</td>
-                        <td>{{ worker.salary }}</td>
-                        <td>{{ worker.bonus_one }}</td>
-                        <td>{{ worker.bonus_two }}</td>
+                        <td>{{ worker.bonus_boss }}</td>
+                        <td>{{ worker.bonus_constant }}</td>
+                        <td>{{ worker.bonus_variable }}</td>
                         <td>{{ worker.total_salary }}</td>
                         <td>{{ worker.work_hours }}</td>
                         <td>{{ worker.unpaid_hours }}</td>

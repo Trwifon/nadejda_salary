@@ -2,12 +2,15 @@ from django.db import models
 
 
 class WorkshopChoices(models.TextChoices):
+    ADMINISTRATION = 'ADM', 'Адм.'
     ANTON = 'AN', 'Антон'
     ALUMIN = 'A', 'Алум.'
     GLASSES = 'G', 'Стъклоп.'
-    PVC = 'P', 'PVC'
+    PVC = 'P', 'PVC 1'
+    PVC2 = 'P2', 'PVC 2'
     INSTALLER = 'I', 'Монт.'
-    LABOURER = 'L', 'Общ раб.'
+    LABOURER = 'L', 'Склад'
+    OUT = 'O', 'Външни'
 
 
 class YearChoices(models.IntegerChoices):

@@ -77,15 +77,15 @@ class WorkerUpdateForm(forms.ModelForm):
     class Meta:
         model = Workers
         fields = [
-            'salary',
-            'bonus_one',
-            'bonus_two',
+            'bonus_boss',
+            'bonus_constant',
+            'bonus_variable',
         ]
 
         labels = {
-            'salary': 'Заплата',
-            'bonus_one': 'Бонус едно',
-            'bonus_two': 'Бонус две',
+            'bonus_boss': 'Бонус шеф',
+            'bonus_constant': 'Бонус постоянен',
+            'bonus_variable': 'Бонус променлив',
         }
 
 

@@ -199,9 +199,9 @@ class DataListView(PermissionRequiredMixin, ListView):
         )
 
         for worker in worker_month_list:
-            worker.salary = worker.worker.salary
-            worker.bonus_one = worker.worker.bonus_one
-            worker.bonus_two = worker.worker.bonus_two
+            worker.salary = worker.worker.bonus_boss
+            worker.bonus_one = worker.worker.bonus_constant
+            worker.bonus_two = worker.worker.bonus_variable
             worker.save()
 
         return worker_month_list

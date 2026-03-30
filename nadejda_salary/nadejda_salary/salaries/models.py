@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 PAY_PER_SICK = 20.67
 PAY_PER_VACATION = 29.50
+MAIN_SALARY = 563
 
 
 class Workers(models.Model):
@@ -19,17 +20,17 @@ class Workers(models.Model):
         choices=WorkshopChoices.choices,
     )
 
-    salary = models.IntegerField(
+    bonus_boss = models.IntegerField(
         null=True,
         default=0,
     )
 
-    bonus_one = models.IntegerField(
+    bonus_constant = models.IntegerField(
         null=True,
         default=0,
     )
 
-    bonus_two = models.IntegerField(
+    bonus_variable = models.IntegerField(
         null=True,
         default=0,
     )
@@ -38,7 +39,11 @@ class Workers(models.Model):
         null=True,
     )
 
-    initial_vacation = models.PositiveSmallIntegerField()
+    initial_vacation = models.DecimalField(
+        max_digits=4,
+        decimal_places=1,
+        validators=[MinValueValidator(0)],
+    )
 
     start_date = models.DateField(
         blank=True,
@@ -56,7 +61,7 @@ class Workers(models.Model):
 
     @property
     def total_salary(self):
-        return self.salary + self.bonus_one + self.bonus_two
+        return self.bonus_boss + self.bonus_constant + self.bonus_variable + MAIN_SALARY
 
 
 class CurrentMonth(models.Model):
@@ -90,15 +95,15 @@ class CurrentMonth(models.Model):
 
 
 class WorkerMonth(models.Model):
-    salary = models.PositiveSmallIntegerField(
+    bonus_boss = models.PositiveSmallIntegerField(
         default=0,
     )
 
-    bonus_one = models.PositiveSmallIntegerField(
+    bonus_constant = models.PositiveSmallIntegerField(
         default=0,
     )
 
-    bonus_two = models.PositiveSmallIntegerField(
+    bonus_variable = models.PositiveSmallIntegerField(
         default=0,
     )
 
@@ -151,7 +156,7 @@ class WorkerMonth(models.Model):
 
     @property
     def total_salary(self):
-        return self.salary + self.bonus_one + self.bonus_two
+        return self.bonus_boss + self.bonus_constant + self.bonus_variable + MAIN_SALARY
 
     @property
     def gross(self):
