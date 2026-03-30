@@ -83,9 +83,9 @@ class WorkerUpdateForm(forms.ModelForm):
         ]
 
         labels = {
-            'salary': 'Заплата',
-            'bonus_one': 'Бонус едно',
-            'bonus_two': 'Бонус две',
+            'salary': 'Бонус шеф',
+            'bonus_one': 'Бонус постоянен',
+            'bonus_two': 'Бонус променлив',
         }
 
 

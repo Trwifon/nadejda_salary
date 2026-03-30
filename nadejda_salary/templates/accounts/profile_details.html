@@ -18,7 +18,7 @@
         <span class="info">
             Email: {{ profile.email }}
         </span>
-        <article class="warning">
+        <article>
             {% if request.user == profile %}
                 <a href="{% url 'profile_update' request.user.pk %}">
                     <button class="buttons">Редактирай</button>
