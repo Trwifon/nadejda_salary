@@ -20,17 +20,17 @@ class Workers(models.Model):
         choices=WorkshopChoices.choices,
     )
 
-    salary = models.IntegerField(
+    bonus_boss = models.IntegerField(
         null=True,
         default=0,
     )
 
-    bonus_one = models.IntegerField(
+    bonus_constant = models.IntegerField(
         null=True,
         default=0,
     )
 
-    bonus_two = models.IntegerField(
+    bonus_variable = models.IntegerField(
         null=True,
         default=0,
     )
@@ -61,7 +61,7 @@ class Workers(models.Model):
 
     @property
     def total_salary(self):
-        return self.salary + self.bonus_one + self.bonus_two
+        return self.bonus_boss + self.bonus_constant + self.bonus_variable + MAIN_SALARY
 
 
 class CurrentMonth(models.Model):
@@ -95,15 +95,15 @@ class CurrentMonth(models.Model):
 
 
 class WorkerMonth(models.Model):
-    salary = models.PositiveSmallIntegerField(
+    bonus_boss = models.PositiveSmallIntegerField(
         default=0,
     )
 
-    bonus_one = models.PositiveSmallIntegerField(
+    bonus_constant = models.PositiveSmallIntegerField(
         default=0,
     )
 
-    bonus_two = models.PositiveSmallIntegerField(
+    bonus_variable = models.PositiveSmallIntegerField(
         default=0,
     )
 
@@ -156,7 +156,7 @@ class WorkerMonth(models.Model):
 
     @property
     def total_salary(self):
-        return self.salary + self.bonus_one + self.bonus_two + MAIN_SALARY
+        return self.bonus_boss + self.bonus_constant + self.bonus_variable + MAIN_SALARY
 
     @property
     def gross(self):
