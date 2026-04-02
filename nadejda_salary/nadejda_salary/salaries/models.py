@@ -95,7 +95,7 @@ class CurrentMonth(models.Model):
 
 
 class WorkerMonth(models.Model):
-    bonus_boss = models.PositiveSmallIntegerField(
+    bonus_boss = models.SmallIntegerField(
         default=0,
     )
 
@@ -138,7 +138,9 @@ class WorkerMonth(models.Model):
         decimal_places=2,
     )
 
-    voucher = models.SmallIntegerField(
+    voucher = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
         default=0,
     )
 

@@ -16,9 +16,9 @@
         <div class="col">
             <h5 class="section-title">Компоненти на заплатата</h5>
             <table class="table-list details-table">
-                <tr><td>Бонус шеф - €</td><td>{{ object.salary }}</td></tr>
-                <tr><td>Бонус постоянен - €</td><td>{{ object.bonus_one }}</td></tr>
-                <tr><td>Бонус променлив - €</td><td>{{ object.bonus_two }}</td></tr>
+                <tr><td>Бонус шеф - €</td><td>{{ object.bonus_boss }}</td></tr>
+                <tr><td>Бонус постоянен - €</td><td>{{ object.bonus_constant }}</td></tr>
+                <tr><td>Бонус променлив - €</td><td>{{ object.bonus_variable }}</td></tr>
                 <tr><td>Общо заплата - €</td><td>{{ object.total_salary }}</td></tr>
                 <tr><td>Осигуровки - €</td><td>{{ object.insurance|floatformat:2 }}</td></tr>
             </table>
@@ -54,7 +54,7 @@
         <div class="col summary-col">
             <h5 class="section-title">Резюме</h5>
             <table class="table-list details-table">
-                <tr><td>Брутно възнаграждение - €</td><td>{{ object.total|floatformat:2 }}</td></tr>
+                <tr><td>Всичко за плащане - €</td><td>{{ object.total|floatformat:2 }}</td></tr>
                 <tr><td>Платено по банка - €</td><td>{{ object.paid_by_bank|floatformat:2 }}</td></tr>
                 <tr><td>Платено в брой - €</td><td>{{ object.paid_by_cash|floatformat:2 }}</td></tr>
                 <tr><td>Мобилни телефони - €</td><td>{{ object.mobile|floatformat:2 }}</td></tr>

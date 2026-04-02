@@ -52,9 +52,9 @@ class DataFillForm(ModelForm):
             'worker',
             'month',
             'vacation_to_add',
-            'salary',
-            'bonus_one',
-            'bonus_two',
+            'bonus_boss',
+            'bonus_constant',
+            'bonus_variable',
             'total_salary',
             'vacation_calc',
         ]
