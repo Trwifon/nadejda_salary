@@ -67,7 +67,7 @@
                         <td>{{ worker.vacation_calc|floatformat:0 }}</td>
                         <td>{{ worker.pay_for_vacation }}</td>
                         <td>{{ worker.vacation_paid }}</td>
-                        <td>{{ worker.total }}</td>
+                        <td>{{ worker.total|floatformat:2 }}</td>
                         <td>{{ worker.unpaid_hours_euro|floatformat:2 }}</td>
                         <td>{{ worker.paid_by_bank }}</td>
                         <td>{{ worker.paid_by_cash }}</td>
