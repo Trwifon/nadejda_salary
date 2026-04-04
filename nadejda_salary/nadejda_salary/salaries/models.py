@@ -191,6 +191,16 @@ class WorkerMonth(models.Model):
 
     @property
     def vacation_calc(self):
+        if self.worker.start_date and \
+                self.worker.start_date.year == self.month.year and \
+                self.worker.start_date.month == self.month.month:
+            return 0
+
+        if self.worker.end_date and \
+                self.worker.end_date.year == self.month.year and \
+                self.worker.end_date.month == self.month.month:
+            return 0
+
         result = self.month.work_days \
            - self.sick_days_firm \
            - self.sick_days_noi \
