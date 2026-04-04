@@ -3,41 +3,43 @@
 
 {% block content %}
     <div class="record-container">
-        <div>
+        <div class="worker-table-panel">
             <h4>Служители</h4>
-            <table>
-                <tr class="text-center">
-                    <th>Име</th>
-                    <th>Цех</th>
-                    {% if user.is_staff %}
-                        <th>Бонус шеф</th>
-                        <th>Бонус постоянен</th>
-                        <th>Бонус променлив</th>
-                        <th>Общо</th>
-                    {% endif %}
-                    <th>Постъпил на работа</th>
-                </tr>
-                {% for worker in worker_list %}
-                    <tr class="{% if worker.name == current_worker.name %}highlight{% endif %}">
-                        <td>
-                            <a href="{% url 'update_worker' forloop.counter0 %}">
-                                {{worker.name}}
-                            </a>
-                        </td>
-                        <td>{{worker.get_workshop_display}}</td>
+            <div class="table-scroll-container">
+                <table>
+                    <tr class="table-header text-center">
+                        <th>Име</th>
+                        <th>Цех</th>
                         {% if user.is_staff %}
-                            <td>{{worker.bonus_boss}}</td>
-                            <td>{{worker.bonus_constant}}</td>
-                            <td>{{worker.bonus_variable}}</td>
-                            <td>{{worker.total_salary}}</td>
+                            <th>Бонус шеф</th>
+                            <th>Бонус постоянен</th>
+                            <th>Бонус променлив</th>
+                            <th>Общо</th>
                         {% endif %}
-                        <td>{{worker.start_date}}</td>
+                        <th>Постъпил на работа</th>
                     </tr>
-                {% endfor %}
-            </table>
+                    {% for worker in worker_list %}
+                        <tr class="{% if worker.name == current_worker.name %}highlight{% endif %}">
+                            <td>
+                                <a href="{% url 'update_worker' forloop.counter0 %}">
+                                    {{worker.name}}
+                                </a>
+                            </td>
+                            <td>{{worker.get_workshop_display}}</td>
+                            {% if user.is_staff %}
+                                <td>{{worker.bonus_boss}}</td>
+                                <td>{{worker.bonus_constant}}</td>
+                                <td>{{worker.bonus_variable}}</td>
+                                <td>{{worker.total_salary}}</td>
+                            {% endif %}
+                            <td>{{worker.start_date}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
-        <div>
-            <form class="form-group mb-3 " method="post" id="worker-update-form">
+        <div class="worker-form-panel">
+            <form class="form-group mb-3" method="post" id="worker-update-form">
                 <h4>{{ current_worker.name }}</h4>
                 <h5>Цех: {{ current_worker.get_workshop_display }}</h5>
                 <h5>Постъпил: {{ current_worker.start_date }}</h5>
