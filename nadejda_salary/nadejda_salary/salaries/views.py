@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView, ListView, DetailView
+from .choices import WorkshopChoices
 from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
     DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
@@ -209,6 +210,39 @@ class DataListView(PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_month'] = self.current_month
+        return context
+
+
+class RestSummaryView(PermissionRequiredMixin, TemplateView):
+    template_name = 'worker_month/rest_summary.html'
+    permission_required = 'salaries.change_workermonth'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        current_month = CurrentMonth.objects.get(open=True)
+        worker_month_list = (
+            WorkerMonth.objects
+            .select_related('worker', 'month')
+            .filter(month=current_month)
+        )
+
+        anton_rest = sum(
+            worker_month.rest
+            for worker_month in worker_month_list
+            if worker_month.worker.workshop == WorkshopChoices.ANTON
+        )
+        other_rest = sum(
+            worker_month.rest
+            for worker_month in worker_month_list
+            if worker_month.worker.workshop != WorkshopChoices.ANTON
+        )
+
+        context['current_month'] = current_month
+        context['anton_rest'] = anton_rest
+        context['other_rest'] = other_rest
+        context['total_rest'] = anton_rest + other_rest
+
         return context
 
 
