@@ -30,9 +30,10 @@ class Workers(models.Model):
         default=0,
     )
 
-    bonus_variable = models.IntegerField(
-        null=True,
+    bonus_variable = models.DecimalField(
         default=0,
+        max_digits=4,
+        decimal_places=1,
     )
 
     total_vacation = models.PositiveSmallIntegerField(
@@ -181,7 +182,7 @@ class WorkerMonth(models.Model):
 
     @property
     def salary_earned(self):
-        result = (self.work_hours / (self.month.work_days * 8)) * self.total_salary
+        result = (self.work_hours / (self.month.work_days * 8)) * float(self.total_salary)
         return result
 
     @property
