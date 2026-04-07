@@ -6,11 +6,12 @@ class WorkshopChoices(models.TextChoices):
     ANTON = 'AN', 'Антон'
     ALUMIN = 'A', 'Алум.'
     GLASSES = 'G', 'Стъклоп.'
+    NEPAL = 'zN', 'Непал'
     PVC = 'P', 'PVC 1'
     PVC2 = 'P2', 'PVC 2'
     INSTALLER = 'I', 'Монт.'
     LABOURER = 'L', 'Склад'
-    OUT = 'O', 'Външни'
+    OUT = 'zO', 'Външни'
 
 
 class YearChoices(models.IntegerChoices):

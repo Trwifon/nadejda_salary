@@ -238,10 +238,18 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
             if worker_month.worker.workshop != WorkshopChoices.ANTON
         )
 
+        nepal_rest = sum(
+            worker_month.rest
+            for worker_month in worker_month_list
+            if worker_month.worker.workshop == WorkshopChoices.NEPAL
+        )
+
+        paying_rest = other_rest - nepal_rest
+
         context['current_month'] = current_month
         context['anton_rest'] = anton_rest
-        context['other_rest'] = other_rest
-        context['total_rest'] = anton_rest + other_rest
+        context['paying_rest'] = paying_rest
+        context['total_rest'] = anton_rest + paying_rest
 
         return context
 
