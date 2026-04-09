@@ -19,66 +19,70 @@
                 <span>Рекапитулация</span>
             </a>
             <table class="table-list">
-                <tr class="table-header text-center">
-                    <th>Име</th>
-                    <th>Цех</th>
-                    <th>Бонус шеф</th>
-                    <th>Бонус пост.</th>
-                    <th>Бонус пром.</th>
-                    <th>Всичко</th>
-                    <th>Израб. час.</th>
-                    <th>Непл. час.</th>
-                    <th>Зaкр. час.</th>
-                    <th>Дни</th>
-                    <th>Сума</th>
-                    <th>Болн. НОИ</th>
-                    <th>Болн. фирма</th>
-                    <th>Болн. сума</th>
-                    <th>Отп. ред.</th>
-                    <th>Отп. без молба</th>
-                    <th>Отп. сума</th>
-                    <th>Изпл. отп.</th>
-                    <th>Общо запл.</th>
-                    <th>Непл. час. лв</th>
-                    <th>Банка</th>
-                    <th>Аванс Корек.</th>
-                    <th>GSM</th>
-                    <th>Ваучер</th>
-                    <th>Ост.</th>
-                </tr>
-                {% for worker in workers %}
-                    <tr class="text-center">
-                        <td>
-                            <a href="{% url 'details_worker_month' worker.pk %}">
-                                {{ worker.worker.name}}
-                            </a>
-                        </td>
-                        <td>{{ worker.worker.get_workshop_display }}</td>
-                        <td>{{ worker.bonus_boss }}</td>
-                        <td>{{ worker.bonus_constant }}</td>
-                        <td>{{ worker.bonus_variable }}</td>
-                        <td>{{ worker.total_salary }}</td>
-                        <td>{{ worker.work_hours }}</td>
-                        <td>{{ worker.unpaid_hours }}</td>
-                        <td>{{ worker.equivalent_hours }}</td>
-                        <td>{{ worker.equivalent_days|floatformat:0 }}</td>
-                        <td>{{ worker.salary_earned|floatformat:2 }}</td>
-                        <td>{{ worker.sick_days_noi }}</td>
-                        <td>{{ worker.sick_days_firm }}</td>
-                        <td>{{ worker.sick_days_sum }}</td>
-                        <td>{{ worker.vacation_used|floatformat:0 }}</td>
-                        <td>{{ worker.vacation_calc|floatformat:0 }}</td>
-                        <td>{{ worker.pay_for_vacation }}</td>
-                        <td>{{ worker.vacation_paid }}</td>
-                        <td>{{ worker.total|floatformat:2 }}</td>
-                        <td>{{ worker.unpaid_hours_euro|floatformat:2 }}</td>
-                        <td>{{ worker.paid_by_bank }}</td>
-                        <td>{{ worker.paid_by_cash }}</td>
-                        <td>{{ worker.mobile }}</td>
-                        <td>{{ worker.voucher }}</td>
-                        <td>{{ worker.rest|floatformat:2 }}</td>
+                <thead>
+                    <tr class="table-header text-center">
+                        <th>Име</th>
+                        <th>Цех</th>
+                        <th>Бонус шеф</th>
+                        <th>Бонус пост.</th>
+                        <th>Бонус пром.</th>
+                        <th>Всичко</th>
+                        <th>Израб. час.</th>
+                        <th>Непл. час.</th>
+                        <th>Зaкр. час.</th>
+                        <th>Дни</th>
+                        <th>Сума</th>
+                        <th>Болн. НОИ</th>
+                        <th>Болн. фирма</th>
+                        <th>Болн. сума</th>
+                        <th>Отп. ред.</th>
+                        <th>Отп. без молба</th>
+                        <th>Отп. сума</th>
+                        <th>Изпл. отп.</th>
+                        <th>Общо запл.</th>
+                        <th>Непл. час. лв</th>
+                        <th>Банка</th>
+                        <th>Аванс Корек.</th>
+                        <th>GSM</th>
+                        <th>Ваучер</th>
+                        <th>Ост.</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for worker in workers %}
+                        <tr class="text-center">
+                            <td>
+                                <a href="{% url 'details_worker_month' worker.pk %}">
+                                    {{ worker.worker.name}}
+                                </a>
+                            </td>
+                            <td>{{ worker.worker.get_workshop_display }}</td>
+                            <td>{{ worker.bonus_boss }}</td>
+                            <td>{{ worker.bonus_constant }}</td>
+                            <td>{{ worker.bonus_variable }}</td>
+                            <td>{{ worker.total_salary }}</td>
+                            <td>{{ worker.work_hours }}</td>
+                            <td>{{ worker.unpaid_hours }}</td>
+                            <td>{{ worker.equivalent_hours }}</td>
+                            <td>{{ worker.equivalent_days|floatformat:0 }}</td>
+                            <td>{{ worker.salary_earned|floatformat:2 }}</td>
+                            <td>{{ worker.sick_days_noi }}</td>
+                            <td>{{ worker.sick_days_firm }}</td>
+                            <td>{{ worker.sick_days_sum }}</td>
+                            <td>{{ worker.vacation_used|floatformat:0 }}</td>
+                            <td>{{ worker.vacation_calc|floatformat:0 }}</td>
+                            <td>{{ worker.pay_for_vacation }}</td>
+                            <td>{{ worker.vacation_paid }}</td>
+                            <td>{{ worker.total|floatformat:2 }}</td>
+                            <td>{{ worker.unpaid_hours_euro|floatformat:2 }}</td>
+                            <td>{{ worker.paid_by_bank }}</td>
+                            <td>{{ worker.paid_by_cash }}</td>
+                            <td>{{ worker.mobile }}</td>
+                            <td>{{ worker.voucher }}</td>
+                            <td>{{ worker.rest|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
