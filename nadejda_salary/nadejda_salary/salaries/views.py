@@ -232,10 +232,27 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
             for worker_month in worker_month_list
             if worker_month.worker.workshop == WorkshopChoices.ANTON
         )
+
+
+        erkan = WorkerMonth.objects.get(worker_id=53)
+        print(erkan.bonus_variable)
+
+        print(erkan.total_salary)
+        print(erkan.equivalent_days)
+        print(erkan.salary_earned)
+
+
+
         other_rest = sum(
             worker_month.rest
             for worker_month in worker_month_list
-            if worker_month.worker.workshop != WorkshopChoices.ANTON
+            if worker_month.worker.workshop == WorkshopChoices.ADMINISTRATION
+            or worker_month.worker.workshop == WorkshopChoices.GLASSES
+            or worker_month.worker.workshop == WorkshopChoices.PVC
+            or worker_month.worker.workshop == WorkshopChoices.PVC2
+            or worker_month.worker.workshop == WorkshopChoices.ALUMIN
+            or worker_month.worker.workshop == WorkshopChoices.INSTALLER
+            or worker_month.worker.workshop == WorkshopChoices.LABOURER
         )
 
         nepal_rest = sum(
@@ -244,12 +261,12 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
             if worker_month.worker.workshop == WorkshopChoices.NEPAL
         )
 
-        paying_rest = other_rest - nepal_rest
+        # paying_rest = other_rest - nepal_rest
 
         context['current_month'] = current_month
         context['anton_rest'] = anton_rest
-        context['paying_rest'] = paying_rest
-        context['total_rest'] = anton_rest + paying_rest
+        context['other_rest'] = other_rest
+        context['total_rest'] = anton_rest + other_rest
 
         return context
 
