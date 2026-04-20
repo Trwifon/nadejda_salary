@@ -233,16 +233,6 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
             if worker_month.worker.workshop == WorkshopChoices.ANTON
         )
 
-
-        erkan = WorkerMonth.objects.get(worker_id=53)
-        print(erkan.bonus_variable)
-
-        print(erkan.total_salary)
-        print(erkan.equivalent_days)
-        print(erkan.salary_earned)
-
-
-
         other_rest = sum(
             worker_month.rest
             for worker_month in worker_month_list
