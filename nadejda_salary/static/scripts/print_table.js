@@ -23,7 +23,8 @@ function printTable() {
                 body { font-family: Arial, sans-serif; margin: 20px; }
                 h5 { text-align: center; margin-bottom: 20px; }
                 table { border-collapse: collapse; width: 100%; font-size: 10px; }
-                th, td { border: 1px solid #000; padding: 4px; text-align: center; }
+                th, td { border: 1px solid #000; padding: 10px 4px; text-align: center; }
+                td {  padding: 12px 4px; border-bottom: 5px double black; }
                 th { background-color: #f0f0f0; }
                 .print-header-row th { background-color: #f0f0f0; font-weight: 700; }
                 .print-header-row,

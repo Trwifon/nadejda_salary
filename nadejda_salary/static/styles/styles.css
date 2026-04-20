@@ -210,13 +210,13 @@ body {
 }
 
 table {
-    width: 110%;
+    width: 100%;
     border-collapse: collapse;
 }
 
 table :is(th, td) {
-    border: 1px solid #CCC;
-    padding: 0.2em 0.2em;
+    border: 2px solid #999 ;
+    padding: 0.1em 0.2em;
 }
 
 table th {
@@ -230,7 +230,7 @@ table tr {
 
 .table-list {
     width: 100%;
-    margin-top: 1em;
+    margin-top: 0.5em;
 }
 
 .bold-text {

@@ -21,7 +21,7 @@ class VacationDisplayView(TemplateView):
         current_worker = Workers.objects.get(pk=pk)
 
         initial_vacation = current_worker.initial_vacation
-        given_vacation = initial_vacation
+        given_vacation = float(initial_vacation)
 
         vacation_all = 0
 
