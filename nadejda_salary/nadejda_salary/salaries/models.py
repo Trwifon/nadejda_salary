@@ -61,8 +61,12 @@ class Workers(models.Model):
     )
 
     @property
+    def main_salary(self):
+        return MAIN_SALARY
+
+    @property
     def total_salary(self):
-        return self.bonus_boss + self.bonus_constant + self.bonus_variable + MAIN_SALARY
+        return self.bonus_boss + self.bonus_constant + self.bonus_variable + self.main_salary
 
 
 class CurrentMonth(models.Model):
@@ -160,8 +164,12 @@ class WorkerMonth(models.Model):
     )
 
     @property
+    def main_salary(self):
+        return MAIN_SALARY
+
+    @property
     def total_salary(self):
-        return self.bonus_boss + self.bonus_constant + self.bonus_variable + MAIN_SALARY
+        return self.bonus_boss + self.bonus_constant + self.bonus_variable + self.main_salary
 
     @property
     def gross(self):
@@ -184,7 +192,6 @@ class WorkerMonth(models.Model):
 
     @property
     def salary_earned(self):
-        # result = (self.work_hours / (self.month.work_days * 8)) * float(self.total_salary)
         result = float(self.total_salary)/self.month.work_days * self.equivalent_days
         result = round(result, 2)
         return result
