@@ -251,8 +251,6 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
             if worker_month.worker.workshop == WorkshopChoices.NEPAL
         )
 
-        # paying_rest = other_rest - nepal_rest
-
         context['current_month'] = current_month
         context['anton_rest'] = anton_rest
         context['other_rest'] = other_rest
