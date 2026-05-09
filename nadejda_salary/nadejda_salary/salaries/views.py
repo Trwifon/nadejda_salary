@@ -254,7 +254,8 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
         context['current_month'] = current_month
         context['anton_rest'] = anton_rest
         context['other_rest'] = other_rest
-        context['total_rest'] = anton_rest + other_rest
+        context['nepal_rest'] = nepal_rest
+        context['total_rest'] = anton_rest + other_rest + nepal_rest
 
         return context
 

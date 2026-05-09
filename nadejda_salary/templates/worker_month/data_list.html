@@ -51,7 +51,7 @@
                 </thead>
                 <tbody>
                     {% for worker in workers %}
-                        <tr class="text-center">
+                        <tr class="text-center table-data">
                             <td>
                                 <a href="{% url 'details_worker_month' worker.pk %}">
                                     {{ worker.worker.name}}
