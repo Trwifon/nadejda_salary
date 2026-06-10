@@ -8,7 +8,6 @@ PAY_PER_SICK = 20.67
 PAY_PER_VACATION = 29.50
 MAIN_SALARY = 563
 
-
 class Workers(models.Model):
     name = models.CharField(
         max_length=50,
@@ -249,7 +248,13 @@ class WorkerMonth(models.Model):
             - float(self.paid_by_cash) \
             - float(self.mobile) \
             - float(self.voucher)
-        return result
+
+        result = self.total_salary\
+                 - self.paid_by_bank\
+                 - self.paid_by_cash\
+                 - self.mobile if self.worker.id == 52 else result
+
+        return float(result)
 
     @property
     def total_paid(self):
