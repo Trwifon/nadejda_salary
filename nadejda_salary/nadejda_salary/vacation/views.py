@@ -10,7 +10,7 @@ class VacationListView(ListView):
     context_object_name = 'vacations'
 
     def get_queryset(self):
-        return Workers.objects.filter(end_date__isnull=True)
+        return Workers.objects.filter(end_date__isnull=True).order_by('workshop', 'name')
 
 
 class VacationDisplayView(TemplateView):

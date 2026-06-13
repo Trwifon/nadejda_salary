@@ -40,7 +40,9 @@
         </div>
         <div class="worker-form-panel">
             <form class="form-group mb-3" method="post" id="worker-update-form">
-                <h4>{{ current_worker.name }}</h4>
+                <a href="{% url 'archive_worker' current_worker.pk %}">
+                    <h4>{{ current_worker.name}}</h4>
+                </a>
                 <h5>Цех: {{ current_worker.get_workshop_display }}</h5>
                 <h5>Постъпил: {{ current_worker.start_date }}</h5>
                 <hr>

@@ -183,6 +183,18 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         return redirect('update_worker', index)
 
 
+class WorkerArchiveView(PermissionRequiredMixin, ListView):
+    model = WorkerMonth
+    template_name = 'worker_month/worker_archive.html'
+    permission_required = 'salaries.change_workermonth'
+    context_object_name = 'months'
+
+    def get_queryset(self):
+        self.current_worker = Workers.objects.get(pk=self.kwargs['pk'])
+
+
+
+
 class DataListView(PermissionRequiredMixin, ListView):
     model = WorkerMonth
     template_name = 'worker_month/data_list.html'
