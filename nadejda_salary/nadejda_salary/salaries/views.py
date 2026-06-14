@@ -185,14 +185,24 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
 
 class WorkerArchiveView(PermissionRequiredMixin, ListView):
     model = WorkerMonth
-    template_name = 'worker_month/worker_archive.html'
+    template_name = 'workers/worker_archive.html'
     permission_required = 'salaries.change_workermonth'
     context_object_name = 'months'
 
     def get_queryset(self):
         self.current_worker = Workers.objects.get(pk=self.kwargs['pk'])
 
+        worker_archive_list = WorkerMonth.objects\
+            .select_related('worker', 'month')\
+            .filter(worker=self.current_worker)
 
+        return worker_archive_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_worker'] = self.current_worker
+
+        return context
 
 
 class DataListView(PermissionRequiredMixin, ListView):
@@ -204,12 +214,10 @@ class DataListView(PermissionRequiredMixin, ListView):
     def get_queryset(self):
         self.current_month = CurrentMonth.objects.get(open=True)
 
-        worker_month_list = (
-            WorkerMonth.objects
-            .select_related('worker', 'month')
-            .filter(month=self.current_month)
+        worker_month_list = WorkerMonth.objects\
+            .select_related('worker', 'month')\
+            .filter(month=self.current_month)\
             .order_by('worker__workshop', 'worker__name')
-        )
 
         for worker in worker_month_list:
             worker.bonus_boss = worker.worker.bonus_boss

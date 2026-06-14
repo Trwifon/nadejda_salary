@@ -4,92 +4,77 @@
 {% block content %}
     <div class="record-container">
         <div>
-            <h5>
-                <span>Месец: {{ current_month.get_month_display }}</span>
-                <span>{{ current_month.year }} г.</span>
-                <span>- {{ current_month.work_days}} раб. дни</span>
-            </h5>
-            <a class="buttons" href="{% url 'close_month' current_month.pk %}">
-                <span>Приключване на текущия месец</span>
-            </a>
-            <button class="buttons" onclick="printTable()">
-                <span>Печат на таблицата</span>
-            </button>
-            <a class="buttons" href="{% url 'rest_summary' %}">
-                <span>Рекапитулация</span>
-            </a>
+            <h5> {{ current_worker.name }} </h5>
+            <h6> {{ current_worker.get_workshop_display }} </h6>
             <table class="table-list">
                 <thead>
-                    <tr class="table-header text-center">
-                        <th>Име</th>
-                        <th>Цех</th>
-                        <th>Осн. заплата</th>
-                        <th>Бонус шеф</th>
-                        <th>Бонус пост.</th>
-                        <th>Бонус пром.</th>
-                        <th>Общо заплата</th>
-<!--                        <th>Израб. час.</th>-->
-<!--                        <th>Непл. час.</th>-->
-<!--                        <th>Зaкр. час.</th>-->
-                        <th>Дни</th>
-                        <th>Сума</th>
-<!--                        <th>Болн. НОИ</th>-->
-<!--                        <th>Болн. фирма</th>-->
-                        <th>Болн. сума</th>
-<!--                        <th>Отп. ред.</th>-->
-<!--                        <th>Отп. без молба</th>-->
-                        <th>Отп. сума</th>
-<!--                        <th>Изпл. отп.</th>-->
-                        <th>Общо запл.</th>
-                        <th>Непл. час. лв</th>
-                        <th>Банка</th>
-                        <th>Аванс</th>
-                        <th>GSM</th>
-                        <th>Ваучер</th>
-                        <th>За плащане</th>
+                    <tr class="table-header text-center vertical-text">
+                        <th class="vertical-text">Година</th>
+                        <th class="vertical-text">Месец</th>
+                        <th class="vertical-text">Основна заплата</th>
+                        <th class="vertical-text">Бонус шеф</th>
+                        <th class="vertical-text">Бонус постоянен</th>
+                        <th class="vertical-text">Бонус променлив</th>
+                        <th class="vertical-text">Общо заплата</th>
+                        <th class="vertical-text">Изработени часове</th>
+                        <th class="vertical-text">Неплатени часове</th>
+                        <th class="vertical-text">Зaкръглени часове</th>
+                        <th class="vertical-text">Дни</th>
+                        <th class="vertical-text">Изработена сума</th>
+                        <th class="vertical-text">Болнични НОИ</th>
+                        <th class="vertical-text">Болнични фирма</th>
+                        <th class="vertical-text">Болнични сума</th>
+                        <th class="vertical-text">Отпуска редовна</th>
+                        <th class="vertical-text">Отпуска без молба</th>
+                        <th class="vertical-text">Отпуска сума</th>
+                        <th class="vertical-text">Изплатена отпуска</th>
+                        <th class="vertical-text">Общо заплата</th>
+                        <th class="vertical-text">Неплатени часове-лв</th>
+                        <th class="vertical-text">Банка</th>
+                        <th class="vertical-text">Аванс</th>
+                        <th class="vertical-text">GSM</th>
+                        <th class="vertical-text">Ваучер</th>
+                        <th class="vertical-text">За плащане</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for worker in workers %}
+                    {% for month in months %}
                         <tr class="text-center table-data">
-                            <td>
-                                <a href="{% url 'details_worker_month' worker.pk %}">
-                                    {{ worker.worker.name}}
-                                </a>
-                            </td>
-                            <td>{{ worker.worker.get_workshop_display }}</td>
-                            <td>{{ worker.main_salary }}</td>
-                            <td>{{ worker.bonus_boss }}</td>
-                            <td>{{ worker.bonus_constant }}</td>
-                            <td>{{ worker.bonus_variable }}</td>
-                            <td>{{ worker.total_salary }}</td>
-<!--                            <td>{{ worker.work_hours }}</td>-->
-<!--                            <td>{{ worker.unpaid_hours }}</td>-->
-<!--                            <td>{{ worker.equivalent_hours }}</td>-->
-                            <td>{{ worker.equivalent_days|floatformat:0 }}</td>
-                            <td>{{ worker.salary_earned|floatformat:2 }}</td>
-<!--                            <td>{{ worker.sick_days_noi }}</td>-->
-<!--                            <td>{{ worker.sick_days_firm }}</td>-->
-                            <td>{{ worker.sick_days_sum }}</td>
-<!--                            <td>{{ worker.vacation_used|floatformat:0 }}</td>-->
-<!--                            <td>{{ worker.vacation_calc|floatformat:0 }}</td>-->
-                            <td>{{ worker.pay_for_vacation }}</td>
-<!--                            <td>{{ worker.vacation_paid }}</td>-->
-                            <td>{{ worker.total|floatformat:2 }}</td>
-                            <td>{{ worker.unpaid_hours_euro|floatformat:2 }}</td>
-                            <td>{{ worker.paid_by_bank }}</td>
-                            <td>{{ worker.paid_by_cash }}</td>
-                            <td>{{ worker.mobile }}</td>
-                            <td>{{ worker.voucher }}</td>
-                            <td>{{ worker.rest|floatformat:2 }}</td>
+                            <td>{{ month.month.year }}</td>
+                            <td>{{ month.month.month }}</td>
+                            <td>{{ month.main_salary }}</td>
+                            <td>{{ month.bonus_boss }}</td>
+                            <td>{{ month.bonus_constant }}</td>
+                            <td>{{ month.bonus_variable }}</td>
+                            <td>{{ month.total_salary }}</td>
+                            <td>{{ month.work_hours }}</td>
+                            <td>{{ month.unpaid_hours }}</td>
+                            <td>{{ month.equivalent_hours }}</td>
+                            <td>{{ month.equivalent_days|floatformat:0 }}</td>
+                            <td>{{ month.salary_earned|floatformat:2 }}</td>
+                            <td>{{ month.sick_days_noi }}</td>
+                            <td>{{ month.sick_days_firm }}</td>
+                            <td>{{ month.sick_days_sum }}</td>
+                            <td>{{ month.vacation_used|floatformat:0 }}</td>
+                            <td>{{ month.vacation_calc|floatformat:0 }}</td>
+                            <td>{{ month.pay_for_vacation }}</td>
+                            <td>{{ month.vacation_paid }}</td>
+                            <td>{{ month.total|floatformat:2 }}</td>
+                            <td>{{ month.unpaid_hours_euro|floatformat:2 }}</td>
+                            <td>{{ month.paid_by_bank }}</td>
+                            <td>{{ month.paid_by_cash }}</td>
+                            <td>{{ month.mobile }}</td>
+                            <td>{{ month.voucher }}</td>
+                            <td>{{ month.rest|floatformat:2 }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <a href="{% url 'update_worker' 0 %}">
+                <span class = "buttons" >Назад</span>
+            </a>
         </div>
     </div>
-
-    <script src="{% static 'scripts/print_table.js' %}"></script>
 {% endblock %}
 
 
