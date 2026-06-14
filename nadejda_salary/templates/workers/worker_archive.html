@@ -1,0 +1,85 @@
+{% extends 'common/index.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="record-container">
+        <div>
+            <h5> {{ current_worker.name }} </h5>
+            <h6> {{ current_worker.get_workshop_display }} </h6>
+            <table class="table-list">
+                <thead>
+                    <tr class="table-header text-center vertical-text">
+                        <th class="vertical-text">Година</th>
+                        <th class="vertical-text">Месец</th>
+                        <th class="vertical-text">Основна заплата</th>
+                        <th class="vertical-text">Бонус шеф</th>
+                        <th class="vertical-text">Бонус постоянен</th>
+                        <th class="vertical-text">Бонус променлив</th>
+                        <th class="vertical-text">Общо заплата</th>
+                        <th class="vertical-text">Изработени часове</th>
+                        <th class="vertical-text">Неплатени часове</th>
+                        <th class="vertical-text">Зaкръглени часове</th>
+                        <th class="vertical-text">Дни</th>
+                        <th class="vertical-text">Изработена сума</th>
+                        <th class="vertical-text">Болнични НОИ</th>
+                        <th class="vertical-text">Болнични фирма</th>
+                        <th class="vertical-text">Болнични сума</th>
+                        <th class="vertical-text">Отпуска редовна</th>
+                        <th class="vertical-text">Отпуска без молба</th>
+                        <th class="vertical-text">Отпуска сума</th>
+                        <th class="vertical-text">Изплатена отпуска</th>
+                        <th class="vertical-text">Общо заплата</th>
+                        <th class="vertical-text">Неплатени часове-лв</th>
+                        <th class="vertical-text">Банка</th>
+                        <th class="vertical-text">Аванс</th>
+                        <th class="vertical-text">GSM</th>
+                        <th class="vertical-text">Ваучер</th>
+                        <th class="vertical-text">За плащане</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for month in months %}
+                        <tr class="text-center table-data">
+                            <td>{{ month.month.year }}</td>
+                            <td>{{ month.month.month }}</td>
+                            <td>{{ month.main_salary }}</td>
+                            <td>{{ month.bonus_boss }}</td>
+                            <td>{{ month.bonus_constant }}</td>
+                            <td>{{ month.bonus_variable }}</td>
+                            <td>{{ month.total_salary }}</td>
+                            <td>{{ month.work_hours }}</td>
+                            <td>{{ month.unpaid_hours }}</td>
+                            <td>{{ month.equivalent_hours }}</td>
+                            <td>{{ month.equivalent_days|floatformat:0 }}</td>
+                            <td>{{ month.salary_earned|floatformat:2 }}</td>
+                            <td>{{ month.sick_days_noi }}</td>
+                            <td>{{ month.sick_days_firm }}</td>
+                            <td>{{ month.sick_days_sum }}</td>
+                            <td>{{ month.vacation_used|floatformat:0 }}</td>
+                            <td>{{ month.vacation_calc|floatformat:0 }}</td>
+                            <td>{{ month.pay_for_vacation }}</td>
+                            <td>{{ month.vacation_paid }}</td>
+                            <td>{{ month.total|floatformat:2 }}</td>
+                            <td>{{ month.unpaid_hours_euro|floatformat:2 }}</td>
+                            <td>{{ month.paid_by_bank }}</td>
+                            <td>{{ month.paid_by_cash }}</td>
+                            <td>{{ month.mobile }}</td>
+                            <td>{{ month.voucher }}</td>
+                            <td>{{ month.rest|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'update_worker' 0 %}">
+                <span class = "buttons" >Назад</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+

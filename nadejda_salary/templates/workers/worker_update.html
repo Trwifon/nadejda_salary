@@ -40,7 +40,7 @@
         </div>
         <div class="worker-form-panel">
             <form class="form-group mb-3" method="post" id="worker-update-form">
-                <h4>{{ current_worker.name }}</h4>
+                <h4>{{ current_worker.name}}</h4>
                 <h5>Цех: {{ current_worker.get_workshop_display }}</h5>
                 <h5>Постъпил: {{ current_worker.start_date }}</h5>
                 <hr>
@@ -54,6 +54,10 @@
                 <button name="Previous" class = "buttons" type="submit">Предишен</button>
                 <button name="Next" class = "buttons" type="submit" id="next-button">Следващ</button>
                 <button name="OK" class = "buttons" type="submit">OK</button>
+                <hr>
+                <a href="{% url 'archive_worker' current_worker.pk %}">
+                    <span class = "buttons" >Архив</span>
+                </a>
             </form>
         </div>
     </div>

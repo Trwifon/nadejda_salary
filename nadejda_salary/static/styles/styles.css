@@ -350,6 +350,8 @@ table tr {
     margin: 0 0.5rem;
 }
 
-
-
+th.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
 
