@@ -14,7 +14,7 @@ function printTable() {
         printFrame.style.left = '-10000px';
         document.body.appendChild(printFrame);
     }
-    
+
     const printContent = `
         <html>
         <head>
@@ -38,42 +38,42 @@ function printTable() {
         <body></body>
         </html>
     `;
-    
-    printFrame.contentDocument.open();
-    printFrame.contentDocument.write(printContent);
-    printFrame.contentDocument.close();
 
-    const printDocument = printFrame.contentDocument;
-    const printBody = printDocument.body;
+    printFrame.onload = () => {
+        const printDocument = printFrame.contentDocument;
+        const printBody = printDocument.body;
 
-    const heading = printDocument.createElement('h5');
-    heading.textContent = title;
-    printBody.appendChild(heading);
+        const heading = printDocument.createElement('h5');
+        heading.textContent = title;
+        printBody.appendChild(heading);
 
-    const printTable = printDocument.createElement('table');
-    const printTbody = printDocument.createElement('tbody');
+        const printTable = printDocument.createElement('table');
+        const printTbody = printDocument.createElement('tbody');
 
-    dataRows.forEach((row) => {
-        const headerRow = printDocument.createElement('tr');
-        headerRow.className = 'print-header-row';
+        dataRows.forEach((row) => {
+            const headerRow = printDocument.createElement('tr');
+            headerRow.className = 'print-header-row';
 
-        headerCells.forEach((label) => {
-            const headerCell = printDocument.createElement('th');
-            headerCell.textContent = label;
-            headerRow.appendChild(headerCell);
+            headerCells.forEach((label) => {
+                const headerCell = printDocument.createElement('th');
+                headerCell.textContent = label;
+                headerRow.appendChild(headerCell);
+            });
+
+            const dataRow = printDocument.createElement('tr');
+            dataRow.className = 'print-data-row';
+            dataRow.innerHTML = row.innerHTML;
+
+            printTbody.appendChild(headerRow);
+            printTbody.appendChild(dataRow);
         });
 
-        const dataRow = printDocument.createElement('tr');
-        dataRow.className = 'print-data-row';
-        dataRow.innerHTML = row.innerHTML;
+        printTable.appendChild(printTbody);
+        printBody.appendChild(printTable);
 
-        printTbody.appendChild(headerRow);
-        printTbody.appendChild(dataRow);
-    });
+        printFrame.contentWindow.focus();
+        printFrame.contentWindow.print();
+    };
 
-    printTable.appendChild(printTbody);
-    printBody.appendChild(printTable);
-    
-    printFrame.contentWindow.focus();
-    printFrame.contentWindow.print();
+    printFrame.srcdoc = printContent;
 }
