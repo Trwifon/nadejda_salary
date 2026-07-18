@@ -38,16 +38,16 @@
                         <td>{{ month.vacation_used }}</td>
                         <td>{{ month.vacation_calc|floatformat:0 }}</td>
                         <td>{{ month.vacation_paid }}</td>
-                        <td>{{ month.vacation_total|floatformat:0 }}</td>
+                        <td>{{ month.vacation_spent|floatformat:0 }}</td>
                         <td>
                             <span class="bold-text">
-                                {{ month.vacation_all|floatformat:0 }}
+                                {{ month.vacation_total|floatformat:0 }}
                             </span>
                         </td>
                         <td>{{ month.vacation_to_add }}</td>
                         <td>
                             <span class="bold-text">
-                                {{ month.given_vacation|floatformat:1 }}
+                                {{ month.vacation_for_take|floatformat:1 }}
                              </span>
                         </td>
                         <td>

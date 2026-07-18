@@ -8,6 +8,7 @@ from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
     DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
     DataUpdateForm, CloseMonthForm
+from ..vacation.helpers import vacation_calc
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -329,6 +330,18 @@ class CloseMonthView(TemplateView):
                 month = CurrentMonth.objects.get(pk=pk)
                 month.open = False
                 month.save()
+
+                workers = Workers.objects.filter(end_date__isnull=True).filter(contract=True).order_by('workshop', 'name')
+
+                for current_worker in workers:
+                    current_worker_vacation_data = vacation_calc(current_worker)
+
+                    print(current_worker_vacation_data['data'][-1]['vacation_left'])
+                    print(current_worker.name)
+
+                    current_worker.total_vacation = current_worker_vacation_data['data'][-1]['vacation_left']
+                    current_worker.save()
+
             else:
                 return redirect('dashboard')
 
