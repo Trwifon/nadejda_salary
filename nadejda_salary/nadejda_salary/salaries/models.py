@@ -35,8 +35,10 @@ class Workers(models.Model):
         decimal_places=2,
     )
 
-    total_vacation = models.PositiveSmallIntegerField(
+    total_vacation = models.DecimalField(
         null=True,
+        decimal_places=1,
+        max_digits=4,
     )
 
     initial_vacation = models.DecimalField(
@@ -210,6 +212,9 @@ class WorkerMonth(models.Model):
         if self.worker.end_date and \
                 self.worker.end_date.year == self.month.year and \
                 self.worker.end_date.month == self.month.month:
+            return 0
+
+        if self.worker.workshop == 'zO':
             return 0
 
         result = self.month.work_days \
