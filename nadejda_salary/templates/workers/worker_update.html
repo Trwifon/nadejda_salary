@@ -51,6 +51,7 @@
                         {{ field }}
                     </div>
                 {% endfor %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
                 <button name="Previous" class = "buttons" type="submit">Предишен</button>
                 <button name="Next" class = "buttons" type="submit" id="next-button">Следващ</button>
                 <button name="OK" class = "buttons" type="submit">OK</button>

@@ -70,7 +70,7 @@
     <div class="details-actions">
         <a href="{% url 'list_data' %}" class="buttons">Назад</a>
         {% if perms.salaries.change_workers %}
-            <a href="{% url 'update_worker' update_index %}" class="buttons">Редактирай служител</a>
+            <a href="{% url 'update_worker' update_index %}?next={{ request.path }}" class="buttons">Редактирай служител</a>
         {% endif %}
     </div>
 {% endblock %}

@@ -171,8 +171,11 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
         if form.is_valid():
             form.save()
 
-        # If the user clicked OK, save already happened above; always redirect to dashboard
         if 'OK' in request.POST:
+            next_url = self.request.POST.get('next')
+
+            if next_url:
+                return redirect(next_url)
             return redirect('dashboard')
 
         if 'Next' in request.POST:
@@ -335,10 +338,6 @@ class CloseMonthView(TemplateView):
 
                 for current_worker in workers:
                     current_worker_vacation_data = vacation_calc(current_worker)
-
-                    print(current_worker_vacation_data['data'][-1]['vacation_left'])
-                    print(current_worker.name)
-
                     current_worker.total_vacation = current_worker_vacation_data['data'][-1]['vacation_left']
                     current_worker.save()
 
