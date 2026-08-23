@@ -8,6 +8,7 @@ PAY_PER_SICK = 20.67
 PAY_PER_VACATION = 29.50
 MAIN_SALARY = 563
 
+
 class Workers(models.Model):
     name = models.CharField(
         max_length=50,
@@ -223,6 +224,18 @@ class WorkerMonth(models.Model):
            - self.vacation_used \
            - self.equivalent_days
         result = 0 if result < 0 else result
+        result = math.floor(self.worker.total_vacation) if result > math.floor(self.worker.total_vacation)\
+            else result
+        return result
+
+    @property
+    def vacation_unpaid(self):
+        result = self.month.work_days \
+           - self.sick_days_firm \
+           - self.sick_days_noi \
+           - self.vacation_used \
+           - self.equivalent_days \
+           - float(self.vacation_calc)
         return result
 
     @property
@@ -232,7 +245,7 @@ class WorkerMonth(models.Model):
 
     @property
     def pay_for_vacation(self):
-        result = self.vacation_sum * PAY_PER_VACATION
+        result = float(self.vacation_sum) * PAY_PER_VACATION
         return result
 
     @property
@@ -276,7 +289,7 @@ class Vacation(models.Model):
     year = models.PositiveSmallIntegerField(
         validators=[
             MinValueValidator(2024),
-            MaxValueValidator(2044),
+            MaxValueValidator(2068),
         ],
         choices=YearChoices.choices,
     )

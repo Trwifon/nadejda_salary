@@ -11,13 +11,13 @@
                     <th>Цех</th>
                     <th>Оставаща отпуска</th>
                 </tr>
-                {% for vacation in vacations %}
+                {% for worker in workers %}
                     <tr class="text-center">
-                        <td>{{ vacation.name}}</td>
-                        <td>{{ vacation.get_workshop_display }}</td>
+                        <td>{{ worker.name}}</td>
+                        <td>{{ worker.get_workshop_display }}</td>
                         <td>
-                            <a href="{% url 'display_vacation' vacation.pk %}">
-                                {{ vacation.total_vacation }}
+                            <a href="{% url 'display_vacation' worker.pk %}">
+                                {{ worker.total_vacation }}
                             </a>
                         </td>
                     </tr>

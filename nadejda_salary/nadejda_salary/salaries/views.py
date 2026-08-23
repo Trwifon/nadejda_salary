@@ -8,7 +8,7 @@ from .models import Workers, CurrentMonth, WorkerMonth
 from .forms import WorkerCreateForm, MonthCreateForm, \
     DataFillForm, WorkerUpdateForm, WorkerUpdateHRForm,\
     DataUpdateForm, CloseMonthForm
-from ..vacation.helpers import vacation_calc
+from ..vacation.helpers import vacation_calc, sync_worker_with_current_month
 
 
 class WorkerCreateView(PermissionRequiredMixin, CreateView):
@@ -170,6 +170,7 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
 
         if form.is_valid():
             form.save()
+            sync_worker_with_current_month(worker)
 
         if 'OK' in request.POST:
             next_url = self.request.POST.get('next')
@@ -180,7 +181,6 @@ class WorkerUpdateView(PermissionRequiredMixin, TemplateView):
 
         if 'Next' in request.POST:
             index = index + 1 if index < length else index
-
         if 'Previous' in request.POST:
             index = index - 1 if index > 0 else index
 
@@ -258,15 +258,17 @@ class RestSummaryView(PermissionRequiredMixin, TemplateView):
         )
 
         other_rest = sum(
-            worker_month.rest
-            for worker_month in worker_month_list
-            if worker_month.worker.workshop == WorkshopChoices.ADMINISTRATION
-            or worker_month.worker.workshop == WorkshopChoices.GLASSES
-            or worker_month.worker.workshop == WorkshopChoices.PVC
-            or worker_month.worker.workshop == WorkshopChoices.PVC2
-            or worker_month.worker.workshop == WorkshopChoices.ALUMIN
-            or worker_month.worker.workshop == WorkshopChoices.INSTALLER
-            or worker_month.worker.workshop == WorkshopChoices.LABOURER
+            worker_month.rest for worker_month in worker_month_list
+
+            if worker_month.worker.workshop in (
+                WorkshopChoices.ADMINISTRATION,
+                WorkshopChoices.GLASSES,
+                WorkshopChoices.PVC,
+                WorkshopChoices.PVC2,
+                WorkshopChoices.ALUMIN,
+                WorkshopChoices.INSTALLER,
+                WorkshopChoices.LABOURER
+                )
         )
 
         nepal_rest = sum(
