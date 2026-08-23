@@ -8,7 +8,7 @@ def vacation_calc(current_worker):
     vacation_total = 0
 
     current_vacations_data = []
-    vacation_months = WorkerMonth.objects.filter(worker=current_worker.pk).filter(month__open=False)
+    vacation_months = WorkerMonth.objects.filter(worker=current_worker.pk)
 
     current_worker_vacation_data = {'data': current_vacations_data, 'current_worker': current_worker}
 
@@ -18,7 +18,6 @@ def vacation_calc(current_worker):
                          'vacation_used': month.vacation_used,
                          'vacation_calc': month.vacation_calc,
                          'vacation_paid': month.vacation_paid,
-                         'vacation_unpaid': month.vacation_unpaid,
                          }
 
         vacation_spent = month.vacation_used + month.vacation_calc + month.vacation_paid

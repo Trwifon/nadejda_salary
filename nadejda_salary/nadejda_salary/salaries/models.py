@@ -132,6 +132,8 @@ class WorkerMonth(models.Model):
 
     vacation_paid = models.PositiveSmallIntegerField()
 
+    vacation_unpaid = models.PositiveSmallIntegerField()
+
     paid_by_bank = models.DecimalField(
         max_digits=6,
         decimal_places=2,
@@ -224,19 +226,20 @@ class WorkerMonth(models.Model):
            - self.vacation_used \
            - self.equivalent_days
         result = 0 if result < 0 else result
-        result = math.floor(self.worker.total_vacation) if result > math.floor(self.worker.total_vacation)\
-            else result
+        # result = math.floor(self.worker.total_vacation) if result > math.floor(self.worker.total_vacation)\
+        #     else result
+
         return result
 
-    @property
-    def vacation_unpaid(self):
-        result = self.month.work_days \
-           - self.sick_days_firm \
-           - self.sick_days_noi \
-           - self.vacation_used \
-           - self.equivalent_days \
-           - float(self.vacation_calc)
-        return result
+    # @property
+    # def vacation_unpaid(self):
+    #     result = self.month.work_days \
+    #        - self.sick_days_firm \
+    #        - self.sick_days_noi \
+    #        - self.vacation_used \
+    #        - self.equivalent_days \
+    #        - float(self.vacation_calc)
+    #     return result
 
     @property
     def vacation_sum(self):
