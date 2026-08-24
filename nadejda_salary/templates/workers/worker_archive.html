@@ -28,6 +28,7 @@
                         <th class="vertical-text">Отпуска без молба</th>
                         <th class="vertical-text">Отпуска сума</th>
                         <th class="vertical-text">Изплатена отпуска</th>
+                        <th class="vertical-text">Неплатена отпуска</th>
                         <th class="vertical-text">Общо заплата</th>
                         <th class="vertical-text">Неплатени часове-лв</th>
                         <th class="vertical-text">Банка</th>
@@ -59,6 +60,7 @@
                             <td>{{ month.vacation_calc|floatformat:0 }}</td>
                             <td>{{ month.pay_for_vacation }}</td>
                             <td>{{ month.vacation_paid }}</td>
+                            <td>{{ month.vacation_unpaid|floatformat:0 }}</td>
                             <td>{{ month.total|floatformat:2 }}</td>
                             <td>{{ month.unpaid_hours_euro|floatformat:2 }}</td>
                             <td>{{ month.paid_by_bank }}</td>

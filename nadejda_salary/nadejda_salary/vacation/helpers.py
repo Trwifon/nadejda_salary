@@ -1,4 +1,4 @@
-from ..salaries.models import WorkerMonth
+from ..salaries.models import WorkerMonth, CurrentMonth
 
 
 def vacation_calc(current_worker):
@@ -8,7 +8,7 @@ def vacation_calc(current_worker):
     vacation_total = 0
 
     current_vacations_data = []
-    vacation_months = WorkerMonth.objects.filter(worker=current_worker.pk).filter(month__open=False)
+    vacation_months = WorkerMonth.objects.filter(worker=current_worker.pk)
 
     current_worker_vacation_data = {'data': current_vacations_data, 'current_worker': current_worker}
 
@@ -17,7 +17,7 @@ def vacation_calc(current_worker):
                          'month': month.month.month,
                          'vacation_used': month.vacation_used,
                          'vacation_calc': month.vacation_calc,
-                         'vacation_paid': month.vacation_paid
+                         'vacation_paid': month.vacation_paid,
                          }
 
         vacation_spent = month.vacation_used + month.vacation_calc + month.vacation_paid
@@ -41,3 +41,30 @@ def vacation_calc(current_worker):
         current_vacations_data.append(current_month)
 
     return current_worker_vacation_data
+
+
+def sync_worker_with_current_month(worker):
+    current_month = CurrentMonth.objects.filter(open=True).first()
+
+    if not current_month:
+        return
+
+    worker_month = WorkerMonth.objects.filter(
+        worker=worker,
+        month=current_month
+    ).first()
+
+    if not worker_month:
+        return
+
+    worker_month.bonus_boss = worker.bonus_boss
+    worker_month.bonus_constant = worker.bonus_constant
+    worker_month.bonus_variable = worker.bonus_variable
+
+    worker_month.save(
+        update_fields=[
+            'bonus_boss',
+            'bonus_constant',
+            'bonus_variable',
+        ]
+    )

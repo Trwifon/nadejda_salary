@@ -66,6 +66,7 @@ class DataFillForm(ModelForm):
             'sick_days_firm': 'Болн. дни от фирмата',
             'vacation_used': 'Използвана отпуска',
             'vacation_paid': 'Изплатена отпуска',
+            'vacation_unpaid': 'Неплатена отпуска',
             'paid_by_bank': 'Изплатени по банка',
             'paid_by_cash': 'Изплатени в брой',
             'mobile': 'Сметка GSM',

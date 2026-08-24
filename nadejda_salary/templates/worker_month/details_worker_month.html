@@ -43,11 +43,12 @@
 
             <h5 class="section-title">Отпуски</h5>
             <table class="table-list details-table">
-                <tr><td>Използвана отпуска - дни</td><td>{{ object.vacation_used }}</td></tr>
-                <tr><td>Начислена отпуска - дни</td><td>{{ object.vacation_calc|floatformat:0 }}</td></tr>
-                <tr><td>Отпуска общо - дни</td><td>{{ object.vacation_sum|floatformat:0 }}</td></tr>
-                <tr><td>Плащане за отпуска - €</td><td>{{ object.pay_for_vacation|floatformat:2 }}</td></tr>
-                <tr><td>Изплатена отпуска - дни</td><td>{{ object.vacation_paid }}</td></tr>
+                <tr><td>Използван отпуск - дни</td><td>{{ object.vacation_used }}</td></tr>
+                <tr><td>Начислен отпуск - дни</td><td>{{ object.vacation_calc|floatformat:0 }}</td></tr>
+                <tr><td>Плащане за отпуск - €</td><td>{{ object.pay_for_vacation|floatformat:2 }}</td></tr>
+                <tr><td>Платен стар отпуск - дни</td><td>{{ object.vacation_paid }}</td></tr>
+                <tr><td>Отпуск общо - дни</td><td>{{ object.vacation_sum|floatformat:0 }}</td></tr>
+                <tr><td>Неплатен отпуск - дни</td><td>{{ object.vacation_unpaid|floatformat:0 }}</td></tr>
             </table>
         </div>
 
@@ -70,7 +71,7 @@
     <div class="details-actions">
         <a href="{% url 'list_data' %}" class="buttons">Назад</a>
         {% if perms.salaries.change_workers %}
-            <a href="{% url 'update_worker' update_index %}" class="buttons">Редактирай служител</a>
+            <a href="{% url 'update_worker' update_index %}?next={{ request.path }}" class="buttons">Редактирай служител</a>
         {% endif %}
     </div>
 {% endblock %}
