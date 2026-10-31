@@ -57,6 +57,7 @@ class DataFillForm(ModelForm):
             'bonus_variable',
             'total_salary',
             'vacation_calc',
+            'voucher',
         ]
 
         labels = {
@@ -70,7 +71,7 @@ class DataFillForm(ModelForm):
             'paid_by_bank': 'Изплатени по банка',
             'paid_by_cash': 'Изплатени в брой',
             'mobile': 'Сметка GSM',
-            'voucher': 'Ваучери',
+            # 'voucher': 'Удр. ваучери',
         }
 
 

@@ -19,8 +19,10 @@
                 <tr><td>Бонус шеф - €</td><td>{{ object.bonus_boss }}</td></tr>
                 <tr><td>Бонус постоянен - €</td><td>{{ object.bonus_constant }}</td></tr>
                 <tr><td>Бонус променлив - €</td><td>{{ object.bonus_variable }}</td></tr>
-                <tr><td>Общо заплата - €</td><td>{{ object.total_salary }}</td></tr>
+                <tr><td>Нето заплата - €</td><td>{{ object.total_salary }}</td></tr>
                 <tr><td>Осигуровки - €</td><td>{{ object.insurance|floatformat:2 }}</td></tr>
+                <tr><td>Ваучери - €</td><td>{{ object.vouchers }}</td></tr>
+                <tr><td>Бруто заплата - €</td><td>{{ object.gross }}</td></tr>
             </table>
 
             <h5 class="section-title">Часове и еквиваленти</h5>

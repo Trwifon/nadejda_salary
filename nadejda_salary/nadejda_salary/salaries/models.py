@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 PAY_PER_SICK = 20.67
 PAY_PER_VACATION = 29.50
+DAY_VOUCHER = 4
 MAIN_SALARY = 563
 
 
@@ -130,7 +131,7 @@ class WorkerMonth(models.Model):
 
     vacation_used = models.PositiveSmallIntegerField()
 
-    vacation_paid = models.PositiveSmallIntegerField()
+    vacation_paid = models.SmallIntegerField()
 
     vacation_unpaid = models.PositiveSmallIntegerField()
 
@@ -149,11 +150,11 @@ class WorkerMonth(models.Model):
         decimal_places=2,
     )
 
-    voucher = models.DecimalField(
-        max_digits=5,
-        decimal_places=2,
-        default=0,
-    )
+    # voucher = models.DecimalField(
+    #     max_digits=5,
+    #     decimal_places=2,
+    #     default=0,
+    # )
 
     worker = models.ForeignKey(
         to=Workers,
@@ -176,8 +177,12 @@ class WorkerMonth(models.Model):
         return self.bonus_boss + self.bonus_constant + self.bonus_variable + self.main_salary
 
     @property
+    def vouchers(self):
+        return self.month.work_days * DAY_VOUCHER
+
+    @property
     def gross(self):
-        return self.total_salary + self.insurance
+        return self.total_salary + self.insurance + self.vouchers
 
     @property
     def equivalent_hours(self):
@@ -267,8 +272,7 @@ class WorkerMonth(models.Model):
             - float(self.unpaid_hours_euro) \
             - float(self.paid_by_bank) \
             - float(self.paid_by_cash) \
-            - float(self.mobile) \
-            - float(self.voucher)
+            - float(self.mobile)
 
         result = self.total_salary\
                  - self.paid_by_bank\
@@ -283,8 +287,7 @@ class WorkerMonth(models.Model):
             + float(self.unpaid_hours_euro) \
             + float(self.paid_by_bank) \
             + float(self.paid_by_cash) \
-            + float(self.mobile) \
-            + float(self.voucher)
+            + float(self.mobile)
         return result
 
 
