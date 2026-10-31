@@ -33,6 +33,9 @@ function printPaySlips() {
             bonusConstant: cells[4].innerText.trim(),
             bonusVariable: cells[5].innerText.trim(),
             totalSalary: cells[6].innerText.trim(),
+            insurance: row.dataset.insurance,
+            vouchers: row.dataset.vouchers,
+            gross: row.dataset.gross,
             workHours: cells[7].innerText.trim(),
             days: cells[8].innerText.trim(),
             salaryEarned: cells[9].innerText.trim(),
@@ -43,8 +46,7 @@ function printPaySlips() {
             bank: cells[14].innerText.trim(),
             cash: cells[15].innerText.trim(),
             mobile: cells[16].innerText.trim(),
-            voucher: cells[17].innerText.trim(),
-            rest: cells[18].innerText.trim(),
+            rest: cells[17].innerText.trim(),
         };
     });
 
@@ -85,31 +87,34 @@ function printPaySlips() {
 
                 .slip-grid {
                     display: grid;
-                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-columns: repeat(4, minmax(0, 1fr));
+                    grid-auto-rows: 92mm;
                     gap: 0.2mm;
                 }
 
                 .slip {
                     border: var(--border);
-                    padding: 2mm;
-                    min-height: 26mm;
+                    padding: 1.5mm;
+                    min-width: 0;
+                    break-inside: avoid;
+                    page-break-inside: avoid;
                     box-sizing: border-box;
                     font-size: 9px;
-                    line-height: 1.25;
+                    line-height: 1.2;
                 }
 
                 .slip-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: baseline;
-                    gap: 4mm;
-                    padding-bottom: 2mm;
-                    margin-bottom: 2mm;
+                    gap: 1mm;
+                    padding-bottom: 1mm;
+                    margin-bottom: 1mm;
                     border-bottom: var(--border);
                 }
 
                 .slip-name {
-                    font-size: 11px;
+                    font-size: 10px;
                     font-weight: 700;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -127,7 +132,7 @@ function printPaySlips() {
                 }
 
                 .slip-table td {
-                    padding: 0.7mm 0;
+                    padding: 0.45mm 0;
                     vertical-align: top;
                 }
 
@@ -149,8 +154,8 @@ function printPaySlips() {
                 }
 
                 .slip-total {
-                    margin-top: 2mm;
-                    padding-top: 2mm;
+                    margin-top: 1mm;
+                    padding-top: 1mm;
                     border-top: var(--border);
                     font-size: 10px;
                     font-weight: 700;
@@ -167,7 +172,8 @@ function printPaySlips() {
                     }
 
                     .page {
-                        min-height: calc(100vh - 8mm);
+                        break-inside: avoid;
+                        page-break-inside: avoid;
                     }
                 }
             </style>
@@ -206,7 +212,10 @@ function printPaySlips() {
                         <tr><td class="slip-label">Бонус шеф</td><td class="slip-value">${escapeHtml(slip.bonusBoss)}</td></tr>
                         <tr><td class="slip-label">Бонус пост.</td><td class="slip-value">${escapeHtml(slip.bonusConstant)}</td></tr>
                         <tr><td class="slip-label">Бонус пром.</td><td class="slip-value">${escapeHtml(slip.bonusVariable)}</td></tr>
-                        <tr><td class="slip-label">Общо заплата</td><td class="slip-value">${escapeHtml(slip.totalSalary)}</td></tr>
+                        <tr><td class="slip-label">Нето заплата</td><td class="slip-value">${escapeHtml(slip.totalSalary)}</td></tr>
+                        <tr><td class="slip-label">Осигуровки</td><td class="slip-value">${escapeHtml(slip.insurance)}</td></tr>
+                        <tr><td class="slip-label">Ваучери</td><td class="slip-value">${escapeHtml(slip.vouchers)}</td></tr>
+                        <tr><td class="slip-label">Бруто заплата</td><td class="slip-value">${escapeHtml(slip.gross)}</td></tr>
                         <tr><td class="slip-label">Израб. час.</td><td class="slip-value">${escapeHtml(slip.workHours)}</td></tr>
                         <tr><td class="slip-label">Дни</td><td class="slip-value">${escapeHtml(slip.days)}</td></tr>
                         <tr><td class="slip-label">Сума</td><td class="slip-value">${escapeHtml(slip.salaryEarned)}</td></tr>
@@ -217,7 +226,6 @@ function printPaySlips() {
                         <tr><td class="slip-label">Банка</td><td class="slip-value">${escapeHtml(slip.bank)}</td></tr>
                         <tr><td class="slip-label">Аванс</td><td class="slip-value">${escapeHtml(slip.cash)}</td></tr>
                         <tr><td class="slip-label">GSM</td><td class="slip-value">${escapeHtml(slip.mobile)}</td></tr>
-                        <tr><td class="slip-label">Ваучер</td><td class="slip-value">${escapeHtml(slip.voucher)}</td></tr>
                     </tbody>
                 `;
 

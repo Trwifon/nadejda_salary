@@ -24,7 +24,6 @@
                     <th>Банка</th>
                     <th>Други</th>
                     <th>GSM</th>
-                    <th>Ваучери</th>
                 </tr>
                 {% for worker in worker_month_list %}
                     <tr class="{% if worker.worker.name == current_data.worker.name %}highlight{% endif %}">
@@ -43,7 +42,6 @@
                         <td>{{ worker.paid_by_bank }}</td>
                         <td>{{ worker.paid_by_cash }}</td>
                         <td>{{ worker.mobile }}</td>
-                        <td>{{ worker.voucher }}</td>
                     </tr>
                 {% endfor %}
             </table>

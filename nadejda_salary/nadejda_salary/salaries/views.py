@@ -76,6 +76,7 @@ class DataFillView(PermissionRequiredMixin, TemplateView):
                     # vacation_to_add=0,
                     vacation_used=0,
                     vacation_paid=0,
+                    vacation_unpaid=0,
                     paid_by_bank=0,
                     paid_by_cash=0,
                     mobile=0,

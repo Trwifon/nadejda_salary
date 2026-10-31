@@ -48,13 +48,15 @@
                         <th>Банка</th>
                         <th>Аванс</th>
                         <th>GSM</th>
-                        <th>Ваучер</th>
                         <th>За плащане</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for worker in workers %}
-                        <tr class="text-center table-data">
+                        <tr class="text-center table-data"
+                            data-insurance="{{ worker.insurance|floatformat:2 }}"
+                            data-vouchers="{{ worker.vouchers|floatformat:2 }}"
+                            data-gross="{{ worker.gross|floatformat:2 }}">
                             <td>
                                 <a href="{% url 'details_worker_month' worker.pk %}">
                                     {{ worker.worker.name}}
@@ -83,7 +85,6 @@
                             <td>{{ worker.paid_by_bank }}</td>
                             <td>{{ worker.paid_by_cash }}</td>
                             <td>{{ worker.mobile }}</td>
-                            <td>{{ worker.voucher }}</td>
                             <td>{{ worker.rest|floatformat:2 }}</td>
                         </tr>
                     {% endfor %}
